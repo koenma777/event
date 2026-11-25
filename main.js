@@ -1,4 +1,3 @@
-import { isPortraitImage } from './image-layout.js';
 import { dateMark, splitEvents } from './schedule.js';
 
 const KIND_CLASS = {
@@ -47,28 +46,42 @@ function renderDate(event) {
   return time;
 }
 
-function renderFrame(src) {
-  const frame = document.createElement('div');
+let flyerOpener = null;
+
+function openFlyer(src, label, opener) {
+  const dialog = document.querySelector('#flyer');
+  const image = dialog.querySelector('img');
+  image.src = src;
+  image.alt = label;
+  flyerOpener = opener;
+  dialog.showModal();
+}
+
+function setupFlyer() {
+  const dialog = document.querySelector('#flyer');
+  dialog.querySelector('.flyer-close').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    flyerOpener?.focus();
+    flyerOpener = null;
+  });
+}
+
+function renderFrame(src, label) {
+  const frame = document.createElement('button');
+  frame.type = 'button';
   frame.className = 'frame';
-  const backdrop = document.createElement('img');
-  backdrop.className = 'backdrop';
-  backdrop.alt = '';
-  backdrop.src = src;
+  frame.setAttribute('aria-label', label);
   const photo = document.createElement('img');
   photo.className = 'photo';
   photo.alt = '';
   photo.src = src;
   photo.addEventListener('error', () => frame.remove());
-  frame.append(backdrop, photo);
+  frame.addEventListener('click', () => openFlyer(src, label, frame));
+  frame.append(photo);
   return frame;
-}
-
-function watchPortrait(photo, item) {
-  const mark = () => {
-    item.classList.toggle('is-portrait', isPortraitImage(photo.naturalWidth, photo.naturalHeight));
-  };
-  if (photo.complete && photo.naturalWidth > 0) mark();
-  else photo.addEventListener('load', mark, { once: true });
 }
 
 function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
@@ -80,21 +93,20 @@ function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
   if (event.kind) item.dataset.kind = event.kind;
 
   const linked = isOfficialUrl(event.url);
-  const tile = document.createElement(linked ? 'a' : 'div');
+  const hasImage = isImageSrc(event.image);
+  const tile = document.createElement('div');
   tile.className = 'tile';
-  if (linked) tile.href = event.url;
 
-  if (isImageSrc(event.image)) {
+  if (hasImage) {
     item.classList.add('has-image');
-    const frame = renderFrame(event.image);
-    const photo = frame.querySelector('.photo');
-    photo.addEventListener('error', () => item.classList.remove('has-image', 'is-portrait'));
+    const frame = renderFrame(event.image, event.title || '');
+    frame.querySelector('.photo').addEventListener('error', () => item.classList.remove('has-image'));
     tile.append(frame);
-    watchPortrait(photo, item);
   }
 
-  const body = document.createElement('div');
+  const body = document.createElement(linked ? 'a' : 'div');
   body.className = 'event-body';
+  if (linked) body.href = event.url;
   const meta = document.createElement('div');
   meta.className = 'meta';
   if (event.kind) {
@@ -108,18 +120,20 @@ function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
   body.append(meta, heading);
-  const bits = [event.place, event.organizer].filter((bit) => typeof bit === 'string' && bit);
-  if (bits.length) {
-    const where = document.createElement('p');
-    where.className = 'where';
-    where.textContent = bits.join(' · ');
-    body.append(where);
-  }
-  if (typeof event.note === 'string' && event.note) {
-    const note = document.createElement('p');
-    note.className = 'note';
-    note.textContent = event.note;
-    body.append(note);
+  if (!hasImage) {
+    const bits = [event.place, event.organizer].filter((bit) => typeof bit === 'string' && bit);
+    if (bits.length) {
+      const where = document.createElement('p');
+      where.className = 'where';
+      where.textContent = bits.join(' · ');
+      body.append(where);
+    }
+    if (typeof event.note === 'string' && event.note) {
+      const note = document.createElement('p');
+      note.className = 'note';
+      note.textContent = event.note;
+      body.append(note);
+    }
   }
   tile.append(body);
   item.append(tile);
@@ -143,6 +157,8 @@ function showError() {
   message.textContent = 'イベントを読み込めませんでした。';
   main.prepend(message);
 }
+
+setupFlyer();
 
 async function main() {
   try {
