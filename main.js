@@ -22,11 +22,16 @@ function isImageSrc(value) {
   return /^\/?[A-Za-z0-9._/-]+$/.test(value);
 }
 
-function renderEvent(event) {
+function renderEvent(event, { hero = false } = {}) {
   const item = document.createElement('li');
-  item.className = 'event';
+  item.className = hero ? 'event is-hero' : 'event';
   if (event.id) item.dataset.id = event.id;
   if (event.kind) item.dataset.kind = event.kind;
+
+  const linked = isOfficialUrl(event.url);
+  const tile = document.createElement(linked ? 'a' : 'div');
+  tile.className = 'tile';
+  if (linked) tile.href = event.url;
 
   const body = document.createElement('div');
   body.className = 'event-body';
@@ -55,16 +60,7 @@ function renderEvent(event) {
   }
 
   const heading = document.createElement('h3');
-  const title = event.title ?? '';
-  if (isOfficialUrl(event.url)) {
-    const link = document.createElement('a');
-    link.className = 'title';
-    link.href = event.url;
-    link.textContent = title;
-    heading.append(link);
-  } else {
-    heading.textContent = title;
-  }
+  heading.textContent = event.title ?? '';
 
   body.append(meta, heading);
   const bits = [event.place, event.organizer].filter((bit) => typeof bit === 'string' && bit);
@@ -85,21 +81,22 @@ function renderEvent(event) {
     const image = document.createElement('img');
     image.src = event.image;
     image.alt = '';
-    image.width = 120;
-    image.height = 120;
+    image.width = 800;
+    image.height = 560;
     image.addEventListener('error', () => {
       image.remove();
       item.classList.remove('has-image');
     });
     item.classList.add('has-image');
-    item.append(image);
+    tile.append(image);
   }
-  item.append(body);
+  tile.append(body);
+  item.append(tile);
   return item;
 }
 
-function renderList(list, empty, events) {
-  list.replaceChildren(...events.map(renderEvent));
+function renderList(list, empty, events, { hero = false } = {}) {
+  list.replaceChildren(...events.map((event, index) => renderEvent(event, { hero: hero && index === 0 })));
   empty.hidden = events.length !== 0;
 }
 
@@ -119,7 +116,7 @@ async function main() {
     const data = await response.json();
     if (!Array.isArray(data)) throw new Error('events.json is not an array');
     const { upcoming, past } = splitEvents(data, new Date());
-    renderList(document.querySelector('#upcoming'), document.querySelector('#upcoming-empty'), upcoming);
+    renderList(document.querySelector('#upcoming'), document.querySelector('#upcoming-empty'), upcoming, { hero: true });
     renderList(document.querySelector('#past'), document.querySelector('#past-empty'), past);
   } catch (error) {
     console.error(error);

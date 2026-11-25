@@ -10,14 +10,26 @@ test('sample events split into upcoming then past at the viewing date', () => {
   const { upcoming, past } = splitEvents(events, viewedOn);
   assert.deepEqual(
     upcoming.map((event) => event.title),
-    ['【サンプル】海峡まちのDX夜話'],
+    [
+      '【サンプル】架空の海峡ウィークエンド',
+      '【サンプル】存在しない朝のAI相談',
+      '【サンプル】仮のまち食堂',
+      '【サンプル】海峡まちのDX夜話',
+    ],
   );
   assert.deepEqual(
     past.map((event) => event.title),
-    ['【サンプル】存在しない朝市サミット'],
+    [
+      '【サンプル】消えた港の勉強会',
+      '【サンプル】存在しない朝市サミット',
+      '【サンプル】架空の主催ランチ',
+    ],
   );
-  assert.equal(formatWhen(upcoming[0]), '2027年6月6日（日） 14:00–16:00');
-  assert.equal(formatWhen(past[0]), '2026年2月14日（土）');
+  for (const event of events) assert.match(event.title, /^【サンプル】/);
+  assert.deepEqual(new Set(events.map((event) => event.kind)), new Set(['参加', '主催', '紹介']));
+  assert.equal(formatWhen(upcoming[0]), '2026年12月6日（日） 11:00–13:00');
+  assert.equal(formatWhen(upcoming[3]), '2027年6月6日（日） 14:00–16:00');
+  assert.equal(formatWhen(past[1]), '2026年2月14日（土）');
 });
 
 test('a date-only event stays upcoming through that Tokyo day', () => {
