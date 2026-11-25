@@ -1,16 +1,5 @@
 [
   {
-    "id": "2027-03-21-sample-shokudo",
-    "title": "【サンプル】仮のまち食堂",
-    "date": "2027-03-21T18:30",
-    "end": "2027-03-21T20:00",
-    "place": "下関市の仮の食堂",
-    "kind": "主催",
-    "organizer": "平野賢正",
-    "note": "架空の食事会です。",
-    "url": "https://example.com/events/sample-shokudo"
-  },
-  {
     "id": "2027-06-06-sample-kaikyo",
     "title": "【サンプル】海峡まちのDX夜話",
     "date": "2027-06-06T14:00",
