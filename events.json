@@ -1,17 +1,5 @@
 [
   {
-    "id": "2026-12-06-sample-weekend",
-    "title": "【サンプル】架空の海峡ウィークエンド",
-    "date": "2026-12-06T11:00",
-    "end": "2026-12-06T13:00",
-    "place": "下関市の存在しない埠頭",
-    "kind": "参加",
-    "organizer": "架空の実行委員会",
-    "note": "架空の見学会です。",
-    "url": "https://example.com/events/sample-weekend",
-    "image": "images/sample-weekend.svg"
-  },
-  {
     "id": "2027-01-16-sample-ai",
     "title": "【サンプル】存在しない朝のAI相談",
     "date": "2027-01-16",
