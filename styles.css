@@ -256,6 +256,14 @@ h3 {
 }
 
 .where { color: var(--muted); font-weight: 700; }
+.org {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+#past .org { color: #2a261f; }
 .note { color: var(--note); }
 
 #upcoming .has-arrow .event-body { padding-bottom: 2.55rem; }
