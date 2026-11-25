@@ -1,4 +1,4 @@
-import { dateMark, splitEvents } from './schedule.js';
+import { countdownLabel, dateMark, splitEvents } from './schedule.js';
 
 const KIND_CLASS = {
   参加: 'attend',
@@ -30,11 +30,11 @@ function renderDate(event) {
   if (!mark) return time;
   const num = document.createElement('span');
   num.className = 'num';
-  num.textContent = mark.day;
+  num.textContent = `${mark.month}/${mark.day}`;
   const sub = document.createElement('span');
   sub.className = 'sub';
   const when = document.createElement('span');
-  when.textContent = `${mark.year}年${mark.month}月(${mark.weekday})`;
+  when.textContent = `${mark.year}年(${mark.weekday})`;
   sub.append(when);
   if (mark.clock) {
     const clock = document.createElement('span');
@@ -84,7 +84,7 @@ function renderFrame(src, label) {
   return frame;
 }
 
-function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
+function renderEvent(event, { hero = false, arrow = false, index = 0, now = null } = {}) {
   const item = document.createElement('li');
   item.className = hero ? 'event is-hero' : 'event';
   if (arrow) item.classList.add('has-arrow');
@@ -115,6 +115,13 @@ function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
     tag.textContent = event.kind;
     meta.append(tag);
   }
+  const soon = now ? countdownLabel(event, now) : '';
+  if (soon) {
+    const badge = document.createElement('span');
+    badge.className = 'soon';
+    badge.textContent = soon;
+    meta.append(badge);
+  }
   meta.append(renderDate(event));
 
   const heading = document.createElement('h3');
@@ -140,11 +147,12 @@ function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
   return item;
 }
 
-function renderList(list, empty, events, { hero = false } = {}) {
+function renderList(list, empty, events, { hero = false, now = null } = {}) {
   list.replaceChildren(...events.map((event, index) => renderEvent(event, {
     hero: hero && index === 0,
     arrow: hero,
     index,
+    now,
   })));
   empty.hidden = events.length !== 0;
 }
@@ -166,10 +174,11 @@ async function main() {
     if (!response.ok) throw new Error(`status ${response.status}`);
     const data = await response.json();
     if (!Array.isArray(data)) throw new Error('events.json is not an array');
-    const { upcoming, past } = splitEvents(data, new Date());
+    const now = new Date();
+    const { upcoming, past } = splitEvents(data, now);
     const count = document.querySelector('#upcoming-count');
     if (count) count.textContent = String(upcoming.length);
-    renderList(document.querySelector('#upcoming'), document.querySelector('#upcoming-empty'), upcoming, { hero: true });
+    renderList(document.querySelector('#upcoming'), document.querySelector('#upcoming-empty'), upcoming, { hero: true, now });
     renderList(document.querySelector('#past'), document.querySelector('#past-empty'), past);
   } catch (error) {
     console.error(error);

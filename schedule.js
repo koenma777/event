@@ -190,3 +190,23 @@ export function splitEvents(events, now = new Date()) {
   past.sort((a, b) => startMs(b) - startMs(a) || tie(a, b));
   return { upcoming, past };
 }
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+export const COUNTDOWN_DAYS = 14;
+
+function tokyoDayNumber(ms) {
+  return Math.floor((ms + 9 * 60 * 60 * 1000) / DAY_MS);
+}
+
+export function countdownLabel(event, now = new Date()) {
+  const startSpec = parseWhen(event?.date);
+  if (!startSpec || isPast(event, now)) return '';
+  const time = now instanceof Date ? now.getTime() : Number(now);
+  const start = toTokyo(startSpec);
+  const days = Date.UTC(start.y, start.mo - 1, start.d) / DAY_MS - tokyoDayNumber(time);
+  if (days < 0) return '開催中';
+  if (days === 0) return start.hh != null && time >= tokyoStartMs(start) ? '開催中' : '今日';
+  if (days === 1) return '明日';
+  if (days <= COUNTDOWN_DAYS) return `あと${days}日`;
+  return '';
+}

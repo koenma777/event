@@ -217,6 +217,18 @@ section + section { margin-top: 2.2rem; }
   letter-spacing: 0;
 }
 
+.soon {
+  flex: none;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
 .tag-attend { color: #0d5c42; }
 .tag-host { color: #7a2e14; }
 .tag-recommend { color: #1a365d; }
