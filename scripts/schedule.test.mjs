@@ -74,3 +74,30 @@ test('invalid calendar dates are rejected', () => {
   assert.ok(parseWhen('2028-02-29'));
   assert.equal(parseWhen('2026-12-12T24:00'), null);
 });
+
+test('countdown shows from two weeks before until the event ends', async () => {
+  const { countdownLabel } = await import('../schedule.js');
+  const event = { date: '2026-12-12T13:00', end: '2026-12-12T18:00' };
+  const at = (iso) => countdownLabel(event, new Date(iso));
+  assert.equal(at('2026-11-27T12:00:00+09:00'), '');
+  assert.equal(at('2026-11-28T00:00:00+09:00'), 'あと14日');
+  assert.equal(at('2026-12-10T23:59:00+09:00'), 'あと2日');
+  assert.equal(at('2026-12-11T00:00:00+09:00'), '明日');
+  assert.equal(at('2026-12-12T12:59:00+09:00'), '今日');
+  assert.equal(at('2026-12-12T13:00:00+09:00'), '開催中');
+  assert.equal(at('2026-12-12T18:00:00+09:00'), '');
+});
+
+test('countdown counts Tokyo calendar days, not 24-hour spans', async () => {
+  const { countdownLabel } = await import('../schedule.js');
+  const event = { date: '2026-11-28T12:00' };
+  assert.equal(countdownLabel(event, new Date('2026-11-27T23:30:00+09:00')), '明日');
+  assert.equal(countdownLabel(event, new Date('2026-11-27T15:00:00Z')), '今日');
+});
+
+test('a date-only or multi-day event reads 今日 then 開催中', async () => {
+  const { countdownLabel } = await import('../schedule.js');
+  assert.equal(countdownLabel({ date: '2026-11-25' }, new Date('2026-11-25T10:00:00+09:00')), '今日');
+  const multi = { date: '2026-11-25', end: '2026-11-27' };
+  assert.equal(countdownLabel(multi, new Date('2026-11-26T10:00:00+09:00')), '開催中');
+});
