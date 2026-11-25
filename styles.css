@@ -233,10 +233,35 @@ h3 {
 
 .where { color: var(--muted); font-weight: 700; }
 .org {
-  margin: 0;
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
   color: var(--muted);
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.org li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.org .role {
+  flex: none;
+  padding: 0.05rem 0.45rem;
+  border: 1.5px solid currentColor;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+.org-name {
+  min-width: 0;
+  font-weight: 700;
   overflow-wrap: anywhere;
 }
 #past .org { color: #2a261f; }

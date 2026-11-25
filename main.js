@@ -5,6 +5,7 @@ import {
   googleCalendarUrl,
   icsText,
   mapUrl,
+  organizerParts,
   splitEvents,
 } from './schedule.js';
 
@@ -142,10 +143,24 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
   body.append(meta, heading);
-  if (typeof event.organizer === 'string' && event.organizer) {
-    const org = document.createElement('p');
+  const parts = organizerParts(event.organizer);
+  if (parts.length) {
+    const org = document.createElement('ul');
     org.className = 'org';
-    org.textContent = event.organizer;
+    for (const part of parts) {
+      const row = document.createElement('li');
+      if (part.role) {
+        const role = document.createElement('span');
+        role.className = 'role';
+        role.textContent = part.role;
+        row.append(role);
+      }
+      const name = document.createElement('span');
+      name.className = 'org-name';
+      name.textContent = part.name;
+      row.append(name);
+      org.append(row);
+    }
     body.append(org);
   }
   if (!hasImage) {

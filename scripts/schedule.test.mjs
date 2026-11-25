@@ -132,3 +132,14 @@ test('map links skip online-only places and use the first physical place', async
   assert.equal(mapUrl('福岡大学8号館831教室'), 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('福岡大学8号館831教室'));
   assert.ok(mapUrl('Zero-Ten Park HALL／オンライン').endsWith(encodeURIComponent('Zero-Ten Park HALL')));
 });
+
+test('organizer text splits into role and name pairs', async () => {
+  const { organizerParts } = await import('../schedule.js');
+  assert.deepEqual(organizerParts('主催 山口県／共催 大学リーグやまぐち／企画・運営 株式会社リージョナルマネジメント'), [
+    { role: '主催', name: '山口県' },
+    { role: '共催', name: '大学リーグやまぐち' },
+    { role: '企画・運営', name: '株式会社リージョナルマネジメント' },
+  ]);
+  assert.deepEqual(organizerParts('平野賢正'), [{ role: '', name: '平野賢正' }]);
+  assert.deepEqual(organizerParts(''), []);
+});
