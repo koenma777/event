@@ -300,3 +300,17 @@ export function mapUrl(place) {
   if (!spot) return '';
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot)}`;
 }
+
+const ROLE_RE = /^(主催|共催|企画・運営|企画運営|運営|企画|協力)[\s　:：]+(.+)$/;
+
+export function organizerParts(text) {
+  if (typeof text !== 'string') return [];
+  return text
+    .split('／')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const match = ROLE_RE.exec(part);
+      return match ? { role: match[1], name: match[2].trim() } : { role: '', name: part };
+    });
+}
