@@ -16,7 +16,7 @@
 - `end` … 終了。省略可。形式は `date` と同じ
 - `place` … 会場、または「オンライン」
 - `kind` … `参加` / `主催` / `紹介`（`attend` / `host` / `recommend` も可）
-- `organizer` … 主催者
+- `organizer` … 主催・共催・運営の団体。役割を付けて「／」で区切る（例: `主催 山口県／共催 大学リーグやまぐち／企画・運営 株式会社リージョナルマネジメント`）。後援・協賛は書かない
 - `note` … 短いメモ。省略可
 - `url` … 公式ページ。`http` または `https`
 - `image` … 省略可。URLを書くと `images/<id>.<拡張子>` に保存する。省略すると公式ページの `og:image`（なければ `twitter:image`）を探す。3MBを超える、画像でない、取得できないときは飛ばす。Issue 自体は成功する
@@ -40,7 +40,7 @@
     "end": "2026-12-12T10:00",
     "place": "オンライン",
     "kind": "主催",
-    "organizer": "平野賢正",
+    "organizer": "主催 平野賢正",
     "note": "短いメモ",
     "url": "https://example.com/events/example"
   }

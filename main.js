@@ -127,12 +127,17 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
   body.append(meta, heading);
+  if (typeof event.organizer === 'string' && event.organizer) {
+    const org = document.createElement('p');
+    org.className = 'org';
+    org.textContent = event.organizer;
+    body.append(org);
+  }
   if (!hasImage) {
-    const bits = [event.place, event.organizer].filter((bit) => typeof bit === 'string' && bit);
-    if (bits.length) {
+    if (typeof event.place === 'string' && event.place) {
       const where = document.createElement('p');
       where.className = 'where';
-      where.textContent = bits.join(' · ');
+      where.textContent = event.place;
       body.append(where);
     }
     if (typeof event.note === 'string' && event.note) {
