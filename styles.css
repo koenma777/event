@@ -121,8 +121,7 @@ section + section { margin-top: 2.2rem; }
 .event {
   display: flex;
   min-width: 0;
-  animation: rise 0.55s ease both;
-  animation-delay: calc(var(--i, 0) * 45ms);
+  opacity: 1;
 }
 
 .tile {
@@ -323,8 +322,15 @@ h3 {
 .error { margin: 0 0 1rem; color: #7a2e14; font-weight: 700; }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: none; }
+  from { transform: translateY(8px); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .event {
+    animation: rise 0.45s ease;
+    animation-delay: calc(var(--i, 0) * 40ms);
+  }
 }
 
 @media (hover: hover) {
