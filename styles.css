@@ -1,0 +1,200 @@
+:root {
+  --bg: #f3f0ea;
+  --ink: #1d1b17;
+  --muted: #514d47;
+  --note: #3a3733;
+  --line: #ddd6cc;
+  --underline: #c4baae;
+  --focus: #145c45;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--bg); }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic", "YuGothic", Meiryo, "WenQuanYi Micro Hei", "Droid Sans Fallback", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  line-break: strict;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+
+.wrap {
+  width: min(100% - 2rem, 40rem);
+  margin-inline: auto;
+  padding-block: 2.25rem 4rem;
+}
+
+header { margin-bottom: 2.5rem; }
+
+h1 {
+  margin: 0;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif CJK JP", "Noto Serif JP", "Hiragino Sans", "Noto Sans JP", "WenQuanYi Micro Hei", serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+}
+
+.city {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+}
+
+h2 {
+  margin: 0 0 0.15rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+section + section { margin-top: 2.75rem; }
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.event {
+  border-top: 1px solid var(--line);
+  padding: 0.95rem 0 1.15rem;
+}
+
+.event.has-image {
+  display: grid;
+  grid-template-columns: 5.25rem 1fr;
+  column-gap: 0.95rem;
+  align-items: start;
+}
+
+.event img {
+  display: block;
+  width: 5.25rem;
+  height: 5.25rem;
+  object-fit: cover;
+  border-radius: 2px;
+  background: #e4e1da;
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 0.75rem;
+}
+
+time {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.4rem;
+  min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.day,
+.clock.tight { white-space: nowrap; }
+
+.tag {
+  flex: none;
+  padding: 0.12rem 0.48rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+}
+
+.tag-attend { color: #145c45; background: #e5f2ec; }
+.tag-host { color: #8a3d22; background: #f6e6de; }
+.tag-recommend { color: #243e68; background: #e6eef8; }
+.tag-other { color: #3f3c38; background: #ece8e2; }
+
+h3 {
+  margin: 0.35rem 0 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.title {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--underline);
+}
+
+.title:hover { text-decoration-color: currentColor; }
+
+a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.where,
+.note,
+.error,
+.empty {
+  overflow-wrap: anywhere;
+}
+
+.where {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.note {
+  margin: 0.4rem 0 0;
+  color: var(--note);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.empty {
+  margin: 0;
+  padding: 0.9rem 0 0.2rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.empty[hidden] { display: none; }
+
+.error {
+  margin: 0 0 1.25rem;
+  color: #8a3d22;
+}
+
+@media (min-width: 720px) {
+  .wrap {
+    width: min(100% - 4rem, 42rem);
+    padding-block: 4.25rem 5.5rem;
+  }
+
+  h1 { font-size: 2rem; }
+
+  .event.has-image {
+    grid-template-columns: 8.5rem 1fr;
+    column-gap: 1.25rem;
+  }
+
+  .event img {
+    width: 8.5rem;
+    height: 8.5rem;
+  }
+}
