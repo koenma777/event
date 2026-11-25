@@ -1,3 +1,4 @@
+import { isPortraitImage } from './image-layout.js';
 import { dateMark, splitEvents } from './schedule.js';
 
 const KIND_CLASS = {
@@ -62,6 +63,14 @@ function renderFrame(src) {
   return frame;
 }
 
+function watchPortrait(photo, item) {
+  const mark = () => {
+    item.classList.toggle('is-portrait', isPortraitImage(photo.naturalWidth, photo.naturalHeight));
+  };
+  if (photo.complete && photo.naturalWidth > 0) mark();
+  else photo.addEventListener('load', mark, { once: true });
+}
+
 function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
   const item = document.createElement('li');
   item.className = hero ? 'event is-hero' : 'event';
@@ -78,8 +87,10 @@ function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
   if (isImageSrc(event.image)) {
     item.classList.add('has-image');
     const frame = renderFrame(event.image);
-    frame.querySelector('.photo').addEventListener('error', () => item.classList.remove('has-image'));
+    const photo = frame.querySelector('.photo');
+    photo.addEventListener('error', () => item.classList.remove('has-image', 'is-portrait'));
     tile.append(frame);
+    watchPortrait(photo, item);
   }
 
   const body = document.createElement('div');
