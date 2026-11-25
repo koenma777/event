@@ -78,3 +78,7 @@ id は開始日、タイトルの英数字、短いハッシュから作りま�
 4. main にレビュー必須などの保護がある場合は、GitHub Actions からの push を許可する
 
 確認は `node --test` です。
+
+## 共有画像（OGP）
+
+`images/og-share.png`（1200×630）は `tools/og-share.html` を 1200×630 でスクリーンショットして作っています。作り直したら、`index.html` の `og:image` と `twitter:image` の末尾 `?v=` の数字を上げて、SNS のキャッシュを避けてください。
