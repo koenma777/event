@@ -13,33 +13,103 @@ svg{position:absolute;overflow:visible}
 </style></head><body>
 <!-- sparkle top-left -->
 <svg style="left:40px;top:28px" width="80" height="90" viewBox="0 0 90 90"><path d="M45 4 C50 34 56 40 86 45 C56 50 50 56 45 86 C40 56 34 50 4 45 C34 40 40 34 45 4Z" fill="var(--yel)" stroke="#1a1614" stroke-width="5" stroke-linejoin="round"/></svg>
-<!-- calendar -->
-<svg style="left:840px;top:58px" width="250" height="250" viewBox="0 0 250 250">
- <rect x="22" y="40" width="200" height="190" rx="26" fill="#1a1614"/>
- <rect x="10" y="28" width="200" height="190" rx="26" fill="#fff" stroke="#1a1614" stroke-width="6"/>
- <path d="M10 54 a26 26 0 0 1 26-26 h148 a26 26 0 0 1 26 26 v26 h-200z" fill="var(--pink)" stroke="#1a1614" stroke-width="6" stroke-linejoin="round"/>
- <rect x="52" y="8" width="16" height="42" rx="8" fill="#fff" stroke="#1a1614" stroke-width="6"/>
- <rect x="152" y="8" width="16" height="42" rx="8" fill="#fff" stroke="#1a1614" stroke-width="6"/>
- <g fill="#1a1614"><circle cx="50" cy="114" r="9"/><circle cx="90" cy="114" r="9"/><circle cx="130" cy="114" r="9"/><circle cx="170" cy="114" r="9"/><circle cx="50" cy="152" r="9"/><circle cx="90" cy="152" r="9"/><circle cx="170" cy="152" r="9"/><circle cx="50" cy="190" r="9"/><circle cx="90" cy="190" r="9"/><circle cx="130" cy="190" r="9"/></g>
- <circle cx="130" cy="152" r="22" fill="var(--yel)" stroke="#1a1614" stroke-width="6"/>
+<!-- illustration (drawn by Codex) -->
+<svg style="left:780px;top:30px" xmlns="http://www.w3.org/2000/svg" width="400" height="570" viewBox="0 0 400 570" fill="none" stroke="#1a1614" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <path id="calendar" d="M70 145 Q70 134 83 134 H269 Q282 134 282 147 V321 Q282 333 269 333 H83 Q70 333 70 320 Z"/>
+    <path id="bubble" d="M255 75 Q244 75 244 87 V139 Q244 151 257 151 H267 L263 173 L291 151 H341 Q354 151 354 138 V88 Q354 75 341 75 Z"/>
+    <path id="ticket" d="M185 431 H337 V452 C321 452 321 476 337 476 V498 H185 V476 C201 476 201 452 185 452 Z"/>
+    <path id="horn" d="M72 372 L193 318 Q201 315 202 326 L213 424 Q214 436 204 431 L83 408 Z"/>
+    <path id="sparkle" d="M0-16 Q3-3 14 0 Q3 3 0 16 Q-3 3-14 0 Q-3-3 0-16 Z"/>
+  </defs>
+
+  <!-- A loose string of party pennants. -->
+  <path d="M21 28 Q173 100 365 27" stroke-width="3"/>
+  <g transform="translate(8 9)" fill="#1a1614">
+    <path d="M44 39 L94 55 L59 89 Z"/>
+    <path d="M139 64 L190 65 L164 107 Z"/>
+    <path d="M234 61 L285 49 L269 96 Z"/>
+    <path d="M311 42 L351 31 L340 73 Z"/>
+  </g>
+  <path d="M44 39 L94 55 L59 89 Z" fill="#ffc2d4"/>
+  <path d="M139 64 L190 65 L164 107 Z" fill="#ffe45c"/>
+  <path d="M234 61 L285 49 L269 96 Z" fill="#b9f5d0"/>
+  <path d="M311 42 L351 31 L340 73 Z" fill="#cfc6ff"/>
+
+  <!-- A calendar with one much-loved day. -->
+  <g transform="rotate(-7 176 234)">
+    <use href="#calendar" transform="translate(9 10)" fill="#1a1614"/>
+    <use href="#calendar" fill="#ffffff" stroke-width="4.5"/>
+    <path d="M71 183 V147 Q70 134 83 134 H269 Q282 134 282 147 V183 Z" fill="#ffc2d4" stroke-width="4"/>
+    <path d="M104 143 V122 Q104 116 111 116 Q118 116 118 122 V143 Q118 150 111 150 Q104 150 104 143 Z" fill="#ffe45c"/>
+    <path d="M232 143 V122 Q232 116 239 116 Q246 116 246 122 V143 Q246 150 239 150 Q232 150 232 143 Z" fill="#ffe45c"/>
+    <path d="M99 204 H126 V230 H99 Z M162 204 H189 V230 H162 Z M225 204 H252 V230 H225 Z" fill="#cfc6ff" stroke-width="3"/>
+    <path d="M99 264 H126 V290 H99 Z M225 264 H252 V290 H225 Z" fill="#b9f5d0" stroke-width="3"/>
+    <path d="M151 252 Q177 244 199 255 L198 301 Q174 308 151 299 Z" fill="#ffe45c" stroke-width="3"/>
+    <path d="M175 290 C145 273 161 258 175 272 C188 256 205 273 175 290 Z" fill="#ffc2d4" stroke-width="2.5"/>
+    <path d="M97 313 Q117 315 137 313" stroke-width="2.5"/>
+  </g>
+
+  <!-- A friendly conversation above the calendar. -->
+  <g transform="rotate(8 300 123)">
+    <use href="#bubble" transform="translate(9 9)" fill="#1a1614"/>
+    <use href="#bubble" fill="#b9f5d0" stroke-width="4"/>
+    <path d="M299 132 C258 109 279 88 299 107 C319 85 340 110 299 132 Z" fill="#ffc2d4"/>
+    <path d="M279 104 L282 101" stroke="#ffffff" stroke-width="4"/>
+  </g>
+
+  <!-- The little megaphone is ready to invite everyone. -->
+  <g transform="rotate(-8 128 391)">
+    <g transform="translate(9 10)" fill="#1a1614">
+      <path d="M98 403 L128 408 L122 456 Q120 463 112 461 L98 457 Q92 455 94 448 Z"/>
+      <use href="#horn"/>
+      <path d="M57 374 L82 371 L87 408 L63 411 Q54 412 53 402 L51 384 Q50 376 57 374 Z"/>
+    </g>
+    <path d="M98 403 L128 408 L122 456 Q120 463 112 461 L98 457 Q92 455 94 448 Z" fill="#cfc6ff" stroke-width="4"/>
+    <path d="M103 440 L119 444" stroke-width="3"/>
+    <use href="#horn" fill="#ffc2d4" stroke-width="4.5"/>
+    <path d="M187 322 L201 318 Q205 319 206 329 L216 423 Q216 433 207 433 L198 430 Z" fill="#ffe45c" stroke-width="4"/>
+    <path d="M57 374 L82 371 L87 408 L63 411 Q54 412 53 402 L51 384 Q50 376 57 374 Z" fill="#b9f5d0" stroke-width="4"/>
+    <path d="M65 385 L67 398" stroke-width="3"/>
+    <ellipse cx="125" cy="379" rx="3.2" ry="4.5" fill="#1a1614" stroke="none"/>
+    <ellipse cx="158" cy="375" rx="3.2" ry="4.5" fill="#1a1614" stroke="none"/>
+    <path d="M136 388 Q143 397 151 386" stroke-width="3"/>
+    <path d="M113 389 L120 388 M163 383 L170 382" stroke="#ffffff" stroke-width="5"/>
+  </g>
+  <path d="M232 342 L245 331 M241 365 L261 362 M240 390 L255 398" stroke-width="4"/>
+
+  <!-- A keepsake ticket tucked into the foreground. -->
+  <g transform="rotate(-13 261 464)">
+    <use href="#ticket" transform="translate(9 10)" fill="#1a1614"/>
+    <use href="#ticket" fill="#cfc6ff" stroke-width="4"/>
+    <path d="M295 433 V440 M295 450 V456 M295 467 V473 M295 484 V495" stroke-width="2.5"/>
+    <path d="M240 443 L247 456 L262 458 L251 469 L253 483 L240 476 L226 483 L229 469 L218 458 L233 456 Z" fill="#ffe45c" stroke-width="3"/>
+    <path d="M311 447 V454 M311 472 V481" stroke-width="3"/>
+  </g>
+
+  <!-- Scattered handmade party bits and four-point stars. -->
+  <g transform="translate(327 239)">
+    <use href="#sparkle" transform="translate(7 8)" fill="#1a1614"/>
+    <use href="#sparkle" fill="#ffe45c" stroke-width="3"/>
+  </g>
+  <g transform="translate(43 282) rotate(12)">
+    <use href="#sparkle" transform="translate(7 8)" fill="#1a1614"/>
+    <use href="#sparkle" fill="#b9f5d0" stroke-width="3"/>
+  </g>
+  <g transform="translate(137 514) rotate(8)">
+    <use href="#sparkle" transform="translate(7 8)" fill="#1a1614"/>
+    <use href="#sparkle" fill="#ffc2d4" stroke-width="3"/>
+  </g>
+  <path d="M329 293 L339 281 L347 287 L337 299 Z" fill="#ffc2d4" stroke-width="3"/>
+  <path d="M37 177 L27 164 L34 157 L46 171 Z" fill="#ffe45c" stroke-width="3"/>
+  <path d="M293 529 L302 519 L309 525 L301 537 Z" fill="#b9f5d0" stroke-width="3"/>
+  <path d="M324 356 Q344 345 350 361 Q354 372 342 377" stroke-width="3"/>
+  <path d="M45 489 Q32 501 43 511 Q51 516 57 506" stroke-width="3"/>
+  <circle cx="354" cy="202" r="5" fill="#cfc6ff" stroke-width="2.5"/>
+  <circle cx="80" cy="536" r="5" fill="#ffe45c" stroke-width="2.5"/>
+  <circle cx="358" cy="418" r="5" fill="#ffc2d4" stroke-width="2.5"/>
+  <path d="M33 117 L36 122 M313 190 L317 193 M186 540 L190 536" stroke-width="3"/>
 </svg>
-<!-- ticket -->
-<svg style="left:790px;top:410px" width="300" height="170" viewBox="0 0 300 170">
- <g transform="rotate(-10 150 85)">
- <path d="M30 40 h240 v30 a16 16 0 0 0 0 32 v30 h-240 v-30 a16 16 0 0 0 0-32z" transform="translate(10 10)" fill="#1a1614"/>
- <path d="M30 40 h240 v30 a16 16 0 0 0 0 32 v30 h-240 v-30 a16 16 0 0 0 0-32z" fill="var(--mint)" stroke="#1a1614" stroke-width="6" stroke-linejoin="round"/>
- <line x1="205" y1="48" x2="205" y2="124" stroke="#1a1614" stroke-width="5" stroke-dasharray="10 9"/>
- <path d="M118 62 l9 18 20 3 -14 14 3 20 -18-9 -18 9 3-20 -14-14 20-3z" fill="var(--yel)" stroke="#1a1614" stroke-width="5" stroke-linejoin="round"/>
- </g>
-</svg>
-<!-- speech bubble -->
-<svg style="left:1050px;top:300px" width="130" height="110" viewBox="0 0 130 110">
- <path d="M16 8 h96 a12 12 0 0 1 12 12 v48 a12 12 0 0 1 -12 12 h-54 l-26 22 4-22 h-20 a12 12 0 0 1 -12-12 v-48 a12 12 0 0 1 12-12z" fill="var(--lav)" stroke="#1a1614" stroke-width="5" stroke-linejoin="round"/>
- <g fill="#1a1614"><circle cx="40" cy="44" r="6"/><circle cx="64" cy="44" r="6"/><circle cx="88" cy="44" r="6"/></g>
-</svg>
-<!-- small sparkles -->
-<svg style="left:1125px;top:560px" width="50" height="50" viewBox="0 0 90 90"><path d="M45 4 C50 34 56 40 86 45 C56 50 50 56 45 86 C40 56 34 50 4 45 C34 40 40 34 45 4Z" fill="var(--pink)" stroke="#1a1614" stroke-width="7" stroke-linejoin="round"/></svg>
-<svg style="left:1135px;top:200px" width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="16" fill="var(--lav)" stroke="#1a1614" stroke-width="5"/></svg>
 <div class="card">
  <h1>KENSEI<br>HIRANO's<br>EVENTS</h1>
  <div class="tags"><span class="tag" style="background:var(--mint)">参加</span><span class="tag" style="background:var(--pink)">主催</span><span class="tag" style="background:var(--lav)">紹介</span></div>
