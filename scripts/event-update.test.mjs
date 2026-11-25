@@ -248,3 +248,23 @@ test('the workflow is limited to the owner, the event label, and the two write p
   assert.match(yml, /git add -- events\.json/);
   assert.doesNotMatch(yml, /pull-requests:/);
 });
+
+test('deadline can be added, canonicalized, rejected when malformed, and cleared', () => {
+  const created = applyIssue([], fence(addPayload));
+  const withDeadline = applyIssue(
+    created.events,
+    fence({ action: 'update', id: created.id, event: { deadline: '2026-12-10T09:00:00Z' } }),
+  );
+  assert.equal(withDeadline.ok, true);
+  assert.equal(withDeadline.events[0].deadline, '2026-12-10T18:00');
+  const keys = Object.keys(withDeadline.events[0]);
+  assert.ok(keys.indexOf('deadline') > keys.indexOf('date'));
+
+  const bad = applyIssue(created.events, fence({ action: 'update', id: created.id, event: { deadline: '12/10' } }));
+  assert.equal(bad.ok, false);
+  assert.match(bad.comment, /deadline の形式/);
+
+  const cleared = applyIssue(withDeadline.events, fence({ action: 'update', id: created.id, event: { deadline: null } }));
+  assert.equal(cleared.ok, true);
+  assert.equal(cleared.events[0].deadline, undefined);
+});

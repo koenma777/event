@@ -1,4 +1,12 @@
-import { countdownLabel, dateMark, splitEvents } from './schedule.js';
+import {
+  countdownLabel,
+  dateMark,
+  deadlineLabel,
+  googleCalendarUrl,
+  icsText,
+  mapUrl,
+  splitEvents,
+} from './schedule.js';
 
 const KIND_CLASS = {
   参加: 'attend',
@@ -122,6 +130,13 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
     badge.textContent = soon;
     meta.append(badge);
   }
+  const deadline = now ? deadlineLabel(event, now) : null;
+  if (deadline) {
+    const badge = document.createElement('span');
+    badge.className = deadline.closed ? 'deadline is-closed' : 'deadline';
+    badge.textContent = deadline.text;
+    meta.append(badge);
+  }
   meta.append(renderDate(event));
 
   const heading = document.createElement('h3');
@@ -148,8 +163,106 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
     }
   }
   tile.append(body);
+  if (now) {
+    const actions = renderActions(event);
+    if (actions) tile.append(actions);
+  }
   item.append(tile);
   return item;
+}
+
+const ICON = {
+  calendar: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%231a1614' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2.5' y='3.5' width='11' height='10' rx='2'/%3E%3Cpath d='M2.5 7h11M5.5 2v3M10.5 2v3'/%3E%3C/svg%3E\")",
+  map: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%231a1614' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 14.5s-4.5-4.2-4.5-7.7a4.5 4.5 0 0 1 9 0c0 3.5-4.5 7.7-4.5 7.7z'/%3E%3Ccircle cx='8' cy='6.8' r='1.6'/%3E%3C/svg%3E\")",
+};
+
+function iconButton(tag, label, icon) {
+  const el = document.createElement(tag);
+  el.className = 'act';
+  el.setAttribute('aria-label', label);
+  el.title = label;
+  el.style.backgroundImage = ICON[icon];
+  return el;
+}
+
+function downloadIcs(event) {
+  const blob = new Blob([icsText(event)], { type: 'text/calendar;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${event.id || 'event'}.ics`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+
+let openMenu = null;
+
+function closeMenu() {
+  if (!openMenu) return;
+  openMenu.menu.hidden = true;
+  openMenu.button.setAttribute('aria-expanded', 'false');
+  openMenu = null;
+}
+
+document.addEventListener('click', (e) => {
+  if (openMenu && !openMenu.wrap.contains(e.target)) closeMenu();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMenu();
+});
+
+function renderActions(event) {
+  const google = googleCalendarUrl(event);
+  const map = mapUrl(event.place);
+  if (!google && !map) return null;
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+
+  if (google) {
+    const wrap = document.createElement('div');
+    wrap.className = 'cal';
+    const button = iconButton('button', 'カレンダーに追加', 'calendar');
+    button.type = 'button';
+    button.setAttribute('aria-expanded', 'false');
+    const menu = document.createElement('div');
+    menu.className = 'cal-menu';
+    menu.hidden = true;
+    const toGoogle = document.createElement('a');
+    toGoogle.href = google;
+    toGoogle.target = '_blank';
+    toGoogle.rel = 'noopener';
+    toGoogle.textContent = 'Google カレンダー';
+    toGoogle.addEventListener('click', closeMenu);
+    const toIcs = document.createElement('button');
+    toIcs.type = 'button';
+    toIcs.textContent = 'iPhone・Mac など';
+    toIcs.addEventListener('click', () => {
+      downloadIcs(event);
+      closeMenu();
+    });
+    menu.append(toGoogle, toIcs);
+    button.addEventListener('click', () => {
+      const opening = menu.hidden;
+      closeMenu();
+      if (opening) {
+        menu.hidden = false;
+        button.setAttribute('aria-expanded', 'true');
+        openMenu = { wrap, menu, button };
+      }
+    });
+    wrap.append(button, menu);
+    actions.append(wrap);
+  }
+
+  if (map) {
+    const link = iconButton('a', '地図を開く', 'map');
+    link.href = map;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    actions.append(link);
+  }
+  return actions;
 }
 
 function renderList(list, empty, events, { hero = false, now = null } = {}) {

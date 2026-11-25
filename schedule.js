@@ -210,3 +210,93 @@ export function countdownLabel(event, now = new Date()) {
   if (days <= COUNTDOWN_DAYS) return `あと${days}日`;
   return '';
 }
+
+function deadlineEndMs(spec) {
+  const tokyo = toTokyo(spec);
+  return tokyo.hh == null ? nextTokyoMidnightMs(tokyo) : tokyoStartMs(tokyo);
+}
+
+export function deadlineLabel(event, now = new Date()) {
+  const spec = parseWhen(event?.deadline);
+  if (!spec) return null;
+  const time = now instanceof Date ? now.getTime() : Number(now);
+  if (time >= deadlineEndMs(spec)) return { text: '受付終了', closed: true };
+  const tokyo = toTokyo(spec);
+  const clock = tokyo.hh == null ? '' : ` ${clockLabel(tokyo)}`;
+  return { text: `申込 ${tokyo.mo}/${tokyo.d}${clock}まで`, closed: false };
+}
+
+function stamp(ms, withTime) {
+  const d = new Date(ms);
+  const date = `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}`;
+  if (!withTime) return date;
+  return `${date}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+}
+
+export function calendarRange(event) {
+  const startSpec = parseWhen(event?.date);
+  if (!startSpec) return null;
+  const start = toTokyo(startSpec);
+  const endSpec = event.end ? parseWhen(event.end) : null;
+  const end = endSpec ? toTokyo(endSpec) : null;
+  if (start.hh == null) {
+    const from = Date.UTC(start.y, start.mo - 1, start.d);
+    const last = end ? Date.UTC(end.y, end.mo - 1, end.d) : from;
+    return { allDay: true, start: stamp(from, false), end: stamp(last + DAY_MS, false) };
+  }
+  const from = tokyoStartMs(start);
+  let to = from + 60 * 60 * 1000;
+  if (end) to = end.hh == null ? nextTokyoMidnightMs(end) : tokyoStartMs(end);
+  return { allDay: false, start: stamp(from, true), end: stamp(to, true) };
+}
+
+export function googleCalendarUrl(event) {
+  const range = calendarRange(event);
+  if (!range) return '';
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: event.title ?? '',
+    dates: `${range.start}/${range.end}`,
+    ctz: 'Asia/Tokyo',
+  });
+  if (event.place) params.set('location', event.place);
+  if (event.url) params.set('details', event.url);
+  return `https://calendar.google.com/calendar/render?${params}`;
+}
+
+function icsEscape(value) {
+  return String(value).replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/([,;])/g, '\\$1');
+}
+
+export function icsText(event, now = new Date()) {
+  const range = calendarRange(event);
+  if (!range) return '';
+  const when = range.allDay
+    ? [`DTSTART;VALUE=DATE:${range.start}`, `DTEND;VALUE=DATE:${range.end}`]
+    : [`DTSTART:${range.start}`, `DTEND:${range.end}`];
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//koenma777//event//JA',
+    'CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:${event.id ?? 'event'}@koenma777.github.io`,
+    `DTSTAMP:${stamp(now instanceof Date ? now.getTime() : Number(now), true)}`,
+    ...when,
+    `SUMMARY:${icsEscape(event.title ?? '')}`,
+  ];
+  if (event.place) lines.push(`LOCATION:${icsEscape(event.place)}`);
+  if (event.url) lines.push(`URL:${event.url}`, `DESCRIPTION:${icsEscape(event.url)}`);
+  lines.push('END:VEVENT', 'END:VCALENDAR');
+  return `${lines.join('\r\n')}\r\n`;
+}
+
+export function mapUrl(place) {
+  if (typeof place !== 'string') return '';
+  const spot = place
+    .split(/[／/]/)
+    .map((part) => part.trim())
+    .find((part) => part && !/^(オンライン|online)$/i.test(part));
+  if (!spot) return '';
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot)}`;
+}
