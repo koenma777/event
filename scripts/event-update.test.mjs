@@ -181,7 +181,7 @@ function runCli(body, eventsText, { envBody = false } = {}) {
   const result = spawnSync(process.execPath, args, {
     cwd: root,
     encoding: 'utf8',
-    env: { ...process.env, ISSUE_BODY: envBody ? body : '' },
+    env: { ...process.env, EVENT_SKIP_IMAGES: '1', ISSUE_BODY: envBody ? body : '' },
   });
   return {
     status: result.status,

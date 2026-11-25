@@ -1,5 +1,7 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { attachImage } from './event-images.mjs';
 import { applyIssue, serializeEvents } from './event-update.mjs';
 
 function arg(name) {
@@ -42,7 +44,28 @@ function reject(message, paths, code = 1) {
   process.exit(code);
 }
 
-function main() {
+async function localize(result, eventsPath) {
+  if (process.env.EVENT_SKIP_IMAGES === '1') return;
+  if (result.imageIntent !== 'remote' && result.imageIntent !== 'missing') return;
+  const index = result.events.findIndex((event) => event.id === result.id);
+  if (index === -1) return;
+  const outcome = await attachImage(result.events[index], {
+    intent: result.imageIntent,
+    imagesDir: path.resolve(path.dirname(eventsPath), 'images'),
+  });
+  if (outcome.image) {
+    result.events[index] = { ...result.events[index], image: outcome.image };
+    result.changed = true;
+    result.comment = result.comment.replace(/\n$/, `\n- 画像: \`${outcome.image}\`\n`);
+    return;
+  }
+  const line = result.imageIntent === 'remote'
+    ? '画像の保存は飛ばしました。URLはそのままです。'
+    : '画像は見つからなかったので付けていません。';
+  result.comment = result.comment.replace(/\n$/, `\n- ${line}\n`);
+}
+
+async function main() {
   const eventsPath = arg('--events');
   const paths = {
     commentPath: arg('--comment'),
@@ -72,6 +95,15 @@ function main() {
     console.error(error);
     reject('処理中に失敗しました。', paths, 2);
     return;
+  }
+
+  if (result.ok) {
+    try {
+      await localize(result, eventsPath);
+    } catch (error) {
+      console.error(error);
+      result.comment = result.comment.replace(/\n$/, '\n- 画像の保存は飛ばしました。\n');
+    }
   }
 
   if (!result.ok) {

@@ -172,7 +172,7 @@ function fail(errors) {
   };
 }
 
-function ok({ action, id, events, note, changed }) {
+function ok({ action, id, events, note, changed, imageIntent = 'unchanged' }) {
   const lines = ['反映しました。'];
   if (note) lines.push('', note);
   lines.push('', `- 操作: ${ACTION_LABEL[action]}`, `- id: \`${id}\``);
@@ -182,6 +182,7 @@ function ok({ action, id, events, note, changed }) {
     action,
     id,
     events,
+    imageIntent,
     comment: `${lines.join('\n')}\n`,
     commitMessage: `events: ${action} ${id}\n`,
   };
@@ -254,6 +255,7 @@ function addEvent(stored, seen, input) {
       events: stored,
       note: '同じ title・date・url が既にあるため、新規追加はしていません。',
       changed: false,
+      imageIntent: 'unchanged',
     });
   }
   const id = makeId(event.date, event.title, seen);
@@ -262,6 +264,7 @@ function addEvent(stored, seen, input) {
     id,
     events: [...stored, orderEvent({ id, ...event })],
     changed: true,
+    imageIntent: event.image && isHttpUrl(event.image) ? 'remote' : event.image ? 'local' : 'missing',
   });
 }
 
@@ -283,5 +286,17 @@ function updateEvent(stored, index, input) {
   const events = stored.slice();
   events[index] = orderEvent(merged);
   const note = changedKeys.length ? `更新した項目: ${changedKeys.join(', ')}` : '変更はありませんでした。';
-  return ok({ action: 'update', id: stored[index].id, events, note, changed: changedKeys.length > 0 });
+  let imageIntent = 'unchanged';
+  if (Object.hasOwn(input, 'image')) {
+    if (value.image == null) imageIntent = 'cleared';
+    else imageIntent = isHttpUrl(value.image) ? 'remote' : 'local';
+  }
+  return ok({
+    action: 'update',
+    id: stored[index].id,
+    events,
+    note,
+    changed: changedKeys.length > 0,
+    imageIntent,
+  });
 }
