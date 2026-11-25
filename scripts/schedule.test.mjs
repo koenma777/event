@@ -12,28 +12,14 @@ test('events split into upcoming then past at the viewing date', () => {
     upcoming.map((event) => event.title),
     [
       'YAMAGUCHEERS!! MEET&MERRY!（つながるフェス＠山口）',
-      '【サンプル】架空の縦長チラシ',
-      '【サンプル】架空の横長バナー',
       'FU九州ビジネスプランコンテスト2026',
       'Re:Framing Program YAMAGUCHI（リフプロやまぐち＠福岡）',
-      '【サンプル】存在しない朝のAI相談',
-      '【サンプル】仮のまち食堂',
-      '【サンプル】海峡まちのDX夜話',
     ],
   );
-  assert.deepEqual(
-    past.map((event) => event.title),
-    [
-      '【サンプル】消えた港の勉強会',
-      '【サンプル】存在しない朝市サミット',
-      '【サンプル】架空の主催ランチ',
-    ],
-  );
-  assert.ok(events.some((event) => event.title.startsWith('【サンプル】')));
+  assert.deepEqual(past, []);
   assert.deepEqual(new Set(events.map((event) => event.kind)), new Set(['参加', '主催', '紹介']));
   assert.equal(formatWhen(upcoming[0]), '2026年11月28日(土) 12:00–17:00');
-  assert.equal(formatWhen(upcoming[1]), '2026年12月3日(木) 19:00–21:00');
-  assert.equal(formatWhen(past[1]), '2026年2月14日(土)');
+  assert.equal(formatWhen(upcoming[1]), '2026年12月12日(土) 13:00–18:00');
 });
 
 test('a date-only event stays upcoming through that Tokyo day', () => {
