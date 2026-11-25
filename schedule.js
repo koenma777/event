@@ -150,6 +150,26 @@ export function whenPieces(event) {
   return { day, clock: startClock ? `${startClock} – ${endText}` : `– ${endText}` };
 }
 
+export function dateMark(event) {
+  const startSpec = parseWhen(event?.date);
+  if (!startSpec) return null;
+  const start = toTokyo(startSpec);
+  const weekday = WEEKDAYS[new Date(Date.UTC(start.y, start.mo - 1, start.d)).getUTCDay()];
+  const endSpec = event.end ? parseWhen(event.end) : null;
+  const end = endSpec ? toTokyo(endSpec) : null;
+  const sameDay = end && start.y === end.y && start.mo === end.mo && start.d === end.d;
+  let clock = '';
+  if (sameDay && start.hh != null && end.hh != null) clock = `${clockLabel(start)}–${clockLabel(end)}`;
+  else if (start.hh != null) clock = clockLabel(start);
+  return {
+    year: String(start.y),
+    month: String(start.mo),
+    day: String(start.d),
+    weekday,
+    clock,
+  };
+}
+
 export function formatWhen(event) {
   const { day, clock } = whenPieces(event);
   if (!day) return '';

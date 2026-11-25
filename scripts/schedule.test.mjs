@@ -6,30 +6,20 @@ import { formatWhen, isPast, parseWhen, splitEvents } from '../schedule.js';
 const events = JSON.parse(fs.readFileSync(new URL('../events.json', import.meta.url), 'utf8'));
 const viewedOn = new Date('2026-11-25T12:00:00+09:00');
 
-test('sample events split into upcoming then past at the viewing date', () => {
+test('events split into upcoming then past at the viewing date', () => {
   const { upcoming, past } = splitEvents(events, viewedOn);
   assert.deepEqual(
     upcoming.map((event) => event.title),
     [
-      '【サンプル】架空の海峡ウィークエンド',
-      '【サンプル】存在しない朝のAI相談',
-      '【サンプル】仮のまち食堂',
-      '【サンプル】海峡まちのDX夜話',
+      'YAMAGUCHEERS!! MEET&MERRY!（つながるフェス＠山口）',
+      'FU九州ビジネスプランコンテスト2026',
+      'Re:Framing Program YAMAGUCHI（リフプロやまぐち＠福岡）',
     ],
   );
-  assert.deepEqual(
-    past.map((event) => event.title),
-    [
-      '【サンプル】消えた港の勉強会',
-      '【サンプル】存在しない朝市サミット',
-      '【サンプル】架空の主催ランチ',
-    ],
-  );
-  for (const event of events) assert.match(event.title, /^【サンプル】/);
+  assert.deepEqual(past, []);
   assert.deepEqual(new Set(events.map((event) => event.kind)), new Set(['参加', '主催', '紹介']));
-  assert.equal(formatWhen(upcoming[0]), '2026年12月6日(日) 11:00–13:00');
-  assert.equal(formatWhen(upcoming[3]), '2027年6月6日(日) 14:00–16:00');
-  assert.equal(formatWhen(past[1]), '2026年2月14日(土)');
+  assert.equal(formatWhen(upcoming[0]), '2026年11月28日(土) 12:00–17:00');
+  assert.equal(formatWhen(upcoming[1]), '2026年12月12日(土) 13:00–18:00');
 });
 
 test('a date-only event stays upcoming through that Tokyo day', () => {

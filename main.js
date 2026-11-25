@@ -1,4 +1,4 @@
-import { splitEvents, whenPieces } from './schedule.js';
+import { dateMark, splitEvents } from './schedule.js';
 
 const KIND_CLASS = {
   参加: 'attend',
@@ -22,10 +22,51 @@ function isImageSrc(value) {
   return /^\/?[A-Za-z0-9._/-]+$/.test(value);
 }
 
-function renderEvent(event, { hero = false, arrow = false } = {}) {
+function renderDate(event) {
+  const mark = dateMark(event);
+  const time = document.createElement('time');
+  time.className = 'datemark';
+  if (event.date) time.dateTime = event.date;
+  if (!mark) return time;
+  const num = document.createElement('span');
+  num.className = 'num';
+  num.textContent = mark.day;
+  const sub = document.createElement('span');
+  sub.className = 'sub';
+  const when = document.createElement('span');
+  when.textContent = `${mark.year}年${mark.month}月(${mark.weekday})`;
+  sub.append(when);
+  if (mark.clock) {
+    const clock = document.createElement('span');
+    clock.className = 'clock';
+    clock.textContent = mark.clock;
+    sub.append(clock);
+  }
+  time.append(num, sub);
+  return time;
+}
+
+function renderFrame(src) {
+  const frame = document.createElement('div');
+  frame.className = 'frame';
+  const backdrop = document.createElement('img');
+  backdrop.className = 'backdrop';
+  backdrop.alt = '';
+  backdrop.src = src;
+  const photo = document.createElement('img');
+  photo.className = 'photo';
+  photo.alt = '';
+  photo.src = src;
+  photo.addEventListener('error', () => frame.remove());
+  frame.append(backdrop, photo);
+  return frame;
+}
+
+function renderEvent(event, { hero = false, arrow = false, index = 0 } = {}) {
   const item = document.createElement('li');
   item.className = hero ? 'event is-hero' : 'event';
   if (arrow) item.classList.add('has-arrow');
+  item.style.setProperty('--i', String(index));
   if (event.id) item.dataset.id = event.id;
   if (event.kind) item.dataset.kind = event.kind;
 
@@ -34,35 +75,27 @@ function renderEvent(event, { hero = false, arrow = false } = {}) {
   tile.className = 'tile';
   if (linked) tile.href = event.url;
 
+  if (isImageSrc(event.image)) {
+    item.classList.add('has-image');
+    const frame = renderFrame(event.image);
+    frame.querySelector('.photo').addEventListener('error', () => item.classList.remove('has-image'));
+    tile.append(frame);
+  }
+
   const body = document.createElement('div');
   body.className = 'event-body';
-
   const meta = document.createElement('div');
   meta.className = 'meta';
-  const time = document.createElement('time');
-  if (event.date) time.dateTime = event.date;
-  const pieces = whenPieces(event);
-  const day = document.createElement('span');
-  day.className = 'day';
-  day.textContent = pieces.day;
-  time.append(day);
-  if (pieces.clock) {
-    const clock = document.createElement('span');
-    clock.className = /[年月日]/.test(pieces.clock) ? 'clock' : 'clock tight';
-    clock.textContent = pieces.clock;
-    time.append(clock);
-  }
   if (event.kind) {
     const tag = document.createElement('span');
     tag.className = `tag tag-${KIND_CLASS[event.kind] ?? 'other'}`;
     tag.textContent = event.kind;
     meta.append(tag);
   }
-  meta.append(time);
+  meta.append(renderDate(event));
 
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
-
   body.append(meta, heading);
   const bits = [event.place, event.organizer].filter((bit) => typeof bit === 'string' && bit);
   if (bits.length) {
@@ -77,20 +110,6 @@ function renderEvent(event, { hero = false, arrow = false } = {}) {
     note.textContent = event.note;
     body.append(note);
   }
-
-  if (isImageSrc(event.image)) {
-    const image = document.createElement('img');
-    image.src = event.image;
-    image.alt = '';
-    image.width = 800;
-    image.height = 560;
-    image.addEventListener('error', () => {
-      image.remove();
-      item.classList.remove('has-image');
-    });
-    item.classList.add('has-image');
-    tile.append(image);
-  }
   tile.append(body);
   item.append(tile);
   return item;
@@ -100,6 +119,7 @@ function renderList(list, empty, events, { hero = false } = {}) {
   list.replaceChildren(...events.map((event, index) => renderEvent(event, {
     hero: hero && index === 0,
     arrow: hero,
+    index,
   })));
   empty.hidden = events.length !== 0;
 }
@@ -120,6 +140,8 @@ async function main() {
     const data = await response.json();
     if (!Array.isArray(data)) throw new Error('events.json is not an array');
     const { upcoming, past } = splitEvents(data, new Date());
+    const count = document.querySelector('#upcoming-count');
+    if (count) count.textContent = String(upcoming.length);
     renderList(document.querySelector('#upcoming'), document.querySelector('#upcoming-empty'), upcoming, { hero: true });
     renderList(document.querySelector('#past'), document.querySelector('#past-empty'), past);
   } catch (error) {
