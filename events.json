@@ -1,15 +1,5 @@
 [
   {
-    "id": "2026-02-14-sample-asaichi",
-    "title": "【サンプル】存在しない朝市サミット",
-    "date": "2026-02-14",
-    "place": "オンライン",
-    "kind": "紹介",
-    "organizer": "架空の実行委員会",
-    "note": "架空の紹介です。",
-    "url": "https://example.com/events/sample-asaichi"
-  },
-  {
     "id": "2025-11-08-sample-lunch",
     "title": "【サンプル】架空の主催ランチ",
     "date": "2025-11-08T12:00",
