@@ -49,22 +49,13 @@ body::before {
   padding-block: 1.25rem 3.5rem;
 }
 
-.mast-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-  margin-bottom: 1.35rem;
-}
-
-.mast,
-.count {
-  border-radius: 24px;
-  box-shadow: var(--shadow);
-}
-
 .mast {
-  padding: 1.15rem 1.2rem 1.25rem;
-  background: linear-gradient(160deg, #fffdfb, #f3ece4);
+  margin-bottom: 1.6rem;
+  padding: 1.6rem 1.7rem 1.7rem;
+  border: 2.5px solid var(--ink);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 5px 5px 0 var(--ink);
 }
 
 h1 {
@@ -72,25 +63,10 @@ h1 {
   max-width: 14ch;
   font-size: clamp(1.7rem, 7vw, 2.4rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
 }
 
-.count {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 5.25rem;
-  margin: 0;
-  padding: 0 1.2rem;
-  background: #171412;
-  color: #f6f1ea;
-  font-size: 3.4rem;
-  font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 0.9;
-  font-variant-numeric: tabular-nums;
-}
 
 h2 {
   margin: 0 0 0.7rem;
@@ -281,6 +257,40 @@ h3 {
   box-shadow: 0 2px 6px rgba(26, 22, 20, 0.16);
 }
 
+#upcoming .tile {
+  border: 2.5px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+#upcoming .event[data-kind] .tile { background: #fff; }
+#upcoming .frame { border-bottom: 2.5px solid var(--ink); }
+#upcoming .event-body { flex: 1; }
+#upcoming .event[data-kind="参加"] .event-body { background: #b9f5d0; }
+#upcoming .event[data-kind="主催"] .event-body { background: #ffc2d4; }
+#upcoming .event[data-kind="紹介"] .event-body { background: #cfc6ff; }
+#upcoming .tag {
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+#upcoming .soon {
+  border: 2px solid var(--ink);
+  background: #ffe45c;
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+#upcoming .org { color: var(--ink); }
+#upcoming .has-arrow .event-body::after {
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+@media (hover: hover) {
+  #upcoming .event .tile:hover,
+  #upcoming .event:nth-child(even) .tile:hover {
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+}
+
 #past .tile,
 #past .event[data-kind] .tile {
   background: var(--past);
@@ -350,8 +360,7 @@ h3 {
 
 @media (prefers-reduced-motion: reduce) {
   .event,
-  .mast,
-  .count { animation: none; }
+  .mast { animation: none; }
   .tile,
   .photo { transition: none; }
   .tile:hover,
@@ -365,15 +374,7 @@ h3 {
 @media (min-width: 700px) {
   .wrap { width: min(100% - 2.5rem, 56rem); }
 
-  .mast-row {
-    grid-template-columns: minmax(0, 1fr) 8rem;
-    align-items: stretch;
-  }
-
-  .count {
-    justify-content: center;
-    min-height: 100%;
-  }
+  .mast { padding: 2rem 2.4rem 2.1rem; }
 
   #upcoming,
   #past {
@@ -383,7 +384,7 @@ h3 {
   }
 
   #upcoming { align-items: stretch; }
-  #upcoming .frame { aspect-ratio: 4 / 5; }
+  #upcoming .frame { aspect-ratio: 16 / 10; }
   #upcoming .is-hero .num { font-size: 2.35rem; }
   #upcoming .is-hero h3 { font-size: 1.12rem; }
 }
@@ -393,8 +394,6 @@ h3 {
     width: min(100% - 3rem, 72rem);
     padding-block: 2rem 4.5rem;
   }
-
-  .count { font-size: 4.6rem; }
 
   h1 { font-size: 3.15rem; max-width: none; }
 

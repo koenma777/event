@@ -181,8 +181,6 @@ async function main() {
     if (!Array.isArray(data)) throw new Error('events.json is not an array');
     const now = new Date();
     const { upcoming, past } = splitEvents(data, now);
-    const count = document.querySelector('#upcoming-count');
-    if (count) count.textContent = String(upcoming.length);
     renderList(document.querySelector('#upcoming'), document.querySelector('#upcoming-empty'), upcoming, { hero: true, now });
     renderList(document.querySelector('#past'), document.querySelector('#past-empty'), past);
   } catch (error) {
