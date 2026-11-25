@@ -75,5 +75,17 @@
     "organizer": "平野賢正",
     "note": "架空の昼食会です。",
     "url": "https://example.com/events/sample-lunch"
+  },
+  {
+    "id": "2026-11-28-yamagucheers-meet-merry-dfd1a4",
+    "title": "YAMAGUCHEERS!! MEET&MERRY!（つながるフェス＠山口）",
+    "date": "2026-11-28T12:00",
+    "end": "2026-11-28T17:00",
+    "place": "山口大学 第一体育館（山口市吉田1677-1 吉田キャンパス内）",
+    "kind": "主催",
+    "organizer": "山口県",
+    "note": "山口大学で県内企業と学生が交流する、参加無料のクリスマスパーティー交流会。",
+    "url": "https://yamagucheers.com/news/yamagucheers_meetmerry/",
+    "image": "https://yamagucheers.com/wp-content/uploads/2026/11/YC261128_WP.jpg"
   }
 ]
