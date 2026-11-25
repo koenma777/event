@@ -143,7 +143,7 @@ section + section { margin-top: 2.2rem; }
   margin: 0;
   padding: 0;
   border: 0;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #221e1b;
   cursor: zoom-in;
@@ -380,10 +380,9 @@ h3 {
     align-items: start;
   }
 
-  #upcoming .event:first-child { grid-column: span 2; }
-  #upcoming .event:first-child .frame { aspect-ratio: 16 / 9; }
-  #upcoming .is-hero .event-body { padding: 1.15rem 1.35rem 2.6rem; }
-  #upcoming .is-hero h3 { font-size: 1.7rem; }
+  #upcoming .is-hero .num { font-size: 2.35rem; }
+  #upcoming .is-hero h3 { font-size: 1.12rem; }
+  #upcoming .is-hero .event-body { padding: 0.9rem 1rem 2.55rem; }
 
   #past .event:not(.has-image) .tile { min-height: 14rem; }
 }
