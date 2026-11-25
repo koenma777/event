@@ -22,9 +22,10 @@ function isImageSrc(value) {
   return /^\/?[A-Za-z0-9._/-]+$/.test(value);
 }
 
-function renderEvent(event, { hero = false } = {}) {
+function renderEvent(event, { hero = false, arrow = false } = {}) {
   const item = document.createElement('li');
   item.className = hero ? 'event is-hero' : 'event';
+  if (arrow) item.classList.add('has-arrow');
   if (event.id) item.dataset.id = event.id;
   if (event.kind) item.dataset.kind = event.kind;
 
@@ -51,13 +52,13 @@ function renderEvent(event, { hero = false } = {}) {
     clock.textContent = pieces.clock;
     time.append(clock);
   }
-  meta.append(time);
   if (event.kind) {
     const tag = document.createElement('span');
     tag.className = `tag tag-${KIND_CLASS[event.kind] ?? 'other'}`;
     tag.textContent = event.kind;
     meta.append(tag);
   }
+  meta.append(time);
 
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
@@ -96,7 +97,10 @@ function renderEvent(event, { hero = false } = {}) {
 }
 
 function renderList(list, empty, events, { hero = false } = {}) {
-  list.replaceChildren(...events.map((event, index) => renderEvent(event, { hero: hero && index === 0 })));
+  list.replaceChildren(...events.map((event, index) => renderEvent(event, {
+    hero: hero && index === 0,
+    arrow: hero,
+  })));
   empty.hidden = events.length !== 0;
 }
 

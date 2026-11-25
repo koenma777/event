@@ -121,9 +121,10 @@ export function rangesOk(date, end) {
 
 function dayLabel(spec, withYear) {
   const weekday = WEEKDAYS[new Date(Date.UTC(spec.y, spec.mo - 1, spec.d)).getUTCDay()];
-  return withYear
-    ? `${spec.y}年${spec.mo}月${spec.d}日（${weekday}）`
-    : `${spec.mo}月${spec.d}日（${weekday}）`;
+  const date = withYear
+    ? `${spec.y}年${spec.mo}月${spec.d}日`
+    : `${spec.mo}月${spec.d}日`;
+  return `${date}(${weekday})`;
 }
 
 function clockLabel(spec) {

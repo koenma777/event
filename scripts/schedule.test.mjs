@@ -27,9 +27,9 @@ test('sample events split into upcoming then past at the viewing date', () => {
   );
   for (const event of events) assert.match(event.title, /^【サンプル】/);
   assert.deepEqual(new Set(events.map((event) => event.kind)), new Set(['参加', '主催', '紹介']));
-  assert.equal(formatWhen(upcoming[0]), '2026年12月6日（日） 11:00–13:00');
-  assert.equal(formatWhen(upcoming[3]), '2027年6月6日（日） 14:00–16:00');
-  assert.equal(formatWhen(past[1]), '2026年2月14日（土）');
+  assert.equal(formatWhen(upcoming[0]), '2026年12月6日(日) 11:00–13:00');
+  assert.equal(formatWhen(upcoming[3]), '2027年6月6日(日) 14:00–16:00');
+  assert.equal(formatWhen(past[1]), '2026年2月14日(土)');
 });
 
 test('a date-only event stays upcoming through that Tokyo day', () => {
@@ -46,7 +46,7 @@ test('an event with an end time becomes past at that Tokyo time', () => {
 
 test('zoned instants are judged and shown in Tokyo', () => {
   const event = { date: '2026-12-12T00:00:00Z' };
-  assert.equal(formatWhen(event), '2026年12月12日（土） 09:00');
+  assert.equal(formatWhen(event), '2026年12月12日(土) 09:00');
   assert.equal(isPast(event, new Date('2026-12-12T23:00:00+09:00')), false);
   assert.equal(isPast(event, new Date('2026-12-13T00:00:00+09:00')), true);
 });
@@ -75,7 +75,7 @@ test('upcoming is soonest first and past is newest first', () => {
 test('multi-day ranges keep the end date', () => {
   assert.equal(
     formatWhen({ date: '2027-06-06T14:00', end: '2027-06-07T10:00' }),
-    '2027年6月6日（日） 14:00 – 6月7日（月） 10:00',
+    '2027年6月6日(日) 14:00 – 6月7日(月) 10:00',
   );
 });
 
