@@ -1,16 +1,5 @@
 [
   {
-    "id": "2027-01-16-sample-ai",
-    "title": "【サンプル】存在しない朝のAI相談",
-    "date": "2027-01-16",
-    "place": "オンライン",
-    "kind": "紹介",
-    "organizer": "架空の相談係",
-    "note": "架空の紹介です。",
-    "url": "https://example.com/events/sample-ai",
-    "image": "images/sample-salon.svg"
-  },
-  {
     "id": "2027-03-21-sample-shokudo",
     "title": "【サンプル】仮のまち食堂",
     "date": "2027-03-21T18:30",
