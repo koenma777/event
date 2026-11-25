@@ -79,6 +79,7 @@ section + section { margin-top: 2.6rem; }
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-width: 0;
   overflow: hidden;
   border-radius: 1.35rem;
   background: var(--card);
@@ -101,6 +102,8 @@ section + section { margin-top: 2.6rem; }
 .event img {
   display: block;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   height: 12rem;
   object-fit: cover;
   background: #e4e1da;
@@ -110,6 +113,7 @@ section + section { margin-top: 2.6rem; }
   display: flex;
   flex-direction: column;
   gap: 0.28rem;
+  min-width: 0;
   padding: 0.95rem 1.05rem 1.1rem;
 }
 
@@ -254,7 +258,7 @@ h3 {
 
   #upcoming .is-hero.has-image .tile {
     display: grid;
-    grid-template-columns: 1.25fr 0.85fr;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
     min-height: 22rem;
   }
 
@@ -275,7 +279,7 @@ h3 {
 
   #upcoming .event:nth-child(2).has-image .tile {
     display: grid;
-    grid-template-columns: 0.82fr 1fr;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
     min-height: 15rem;
   }
 
@@ -291,7 +295,7 @@ h3 {
 
   #upcoming .event:nth-child(n + 4).has-image .tile {
     display: grid;
-    grid-template-columns: 18rem 1fr;
+    grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
     min-height: 12.5rem;
   }
 
