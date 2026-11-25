@@ -10,9 +10,9 @@ const KIND_MAP = {
   紹介: '紹介',
 };
 
-const EVENT_KEYS = ['title', 'date', 'end', 'place', 'kind', 'organizer', 'note', 'url', 'image'];
+const EVENT_KEYS = ['title', 'date', 'end', 'deadline', 'place', 'kind', 'organizer', 'note', 'url', 'image'];
 const REQUIRED = ['title', 'date', 'place', 'kind', 'organizer', 'url'];
-const OPTIONAL = ['end', 'note', 'image'];
+const OPTIONAL = ['end', 'deadline', 'note', 'image'];
 const STORE_KEYS = ['id', ...EVENT_KEYS];
 const LIMITS = { title: 120, place: 120, organizer: 80, note: 400, url: 500, image: 500 };
 const ID_RE = /^[A-Za-z0-9][A-Za-z0-9-]{0,80}$/;
@@ -61,7 +61,7 @@ function validateField(key, value) {
     if (OPTIONAL.includes(key)) return { omit: true };
     return { error: `${key} が空です。` };
   }
-  if (key === 'date' || key === 'end') {
+  if (key === 'date' || key === 'end' || key === 'deadline') {
     const canonical = canonicalizeWhen(text);
     if (!canonical) {
       return { error: `${key} の形式が正しくありません。YYYY-MM-DD または YYYY-MM-DDTHH:mm で書いてください。` };

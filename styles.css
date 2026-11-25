@@ -242,7 +242,7 @@ h3 {
 #past .org { color: #2a261f; }
 .note { color: var(--note); }
 
-#upcoming .has-arrow .event-body { padding-bottom: 2.55rem; }
+#upcoming .has-arrow .event-body { padding-bottom: 3rem; }
 
 #upcoming .has-arrow .event-body::after {
   content: "";
@@ -296,6 +296,85 @@ h3 {
     box-shadow: 8px 8px 0 var(--ink);
   }
 }
+
+.deadline {
+  flex: none;
+  padding: 0.2rem 0.6rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+.deadline.is-closed {
+  border-style: dashed;
+  box-shadow: none;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.actions {
+  position: absolute;
+  z-index: 3;
+  left: 0.75rem;
+  bottom: 0.7rem;
+  display: flex;
+  gap: 0.45rem;
+}
+.cal { position: relative; }
+.act {
+  display: block;
+  width: 1.9rem;
+  height: 1.9rem;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background-color: #fff;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  box-shadow: 2px 2px 0 var(--ink);
+  cursor: pointer;
+}
+.act:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+.act:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.cal-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 0.5rem);
+  display: flex;
+  flex-direction: column;
+  min-width: 11rem;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.cal-menu[hidden] { display: none; }
+.cal-menu a,
+.cal-menu button {
+  display: block;
+  margin: 0;
+  padding: 0.55rem 0.8rem;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.cal-menu a + button { border-top: 2px solid var(--ink); }
+.cal-menu a:hover,
+.cal-menu button:hover { background: #ffe45c; }
 
 #past .tile,
 #past .event[data-kind] .tile {

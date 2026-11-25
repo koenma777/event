@@ -101,3 +101,34 @@ test('a date-only or multi-day event reads 今日 then 開催中', async () => {
   const multi = { date: '2026-11-25', end: '2026-11-27' };
   assert.equal(countdownLabel(multi, new Date('2026-11-26T10:00:00+09:00')), '開催中');
 });
+
+test('deadline reads 申込 M/Dまで until the Tokyo day ends, then 受付終了', async () => {
+  const { deadlineLabel } = await import('../schedule.js');
+  const event = { date: '2026-12-12T13:00', deadline: '2026-12-10' };
+  assert.deepEqual(deadlineLabel(event, new Date('2026-12-10T23:59:00+09:00')), { text: '申込 12/10まで', closed: false });
+  assert.deepEqual(deadlineLabel(event, new Date('2026-12-11T00:00:00+09:00')), { text: '受付終了', closed: true });
+  assert.deepEqual(deadlineLabel({ deadline: '2026-12-10T18:00' }, new Date('2026-12-10T12:00:00+09:00')), { text: '申込 12/10 18:00まで', closed: false });
+  assert.equal(deadlineLabel({ date: '2026-12-12' }, new Date()), null);
+});
+
+test('calendar links use Tokyo times in UTC, and all-day events span whole days', async () => {
+  const { calendarRange, googleCalendarUrl, icsText } = await import('../schedule.js');
+  const timed = { id: 'a', title: '朝会, 第1回', date: '2026-12-12T13:00', end: '2026-12-12T16:00', place: '会場', url: 'https://example.com/e' };
+  assert.deepEqual(calendarRange(timed), { allDay: false, start: '20261212T040000Z', end: '20261212T070000Z' });
+  assert.deepEqual(calendarRange({ date: '2026-12-12T13:00' }), { allDay: false, start: '20261212T040000Z', end: '20261212T050000Z' });
+  assert.deepEqual(calendarRange({ date: '2026-11-25', end: '2026-11-27' }), { allDay: true, start: '20261125', end: '20261128' });
+  const url = new URL(googleCalendarUrl(timed));
+  assert.equal(url.searchParams.get('dates'), '20261212T040000Z/20261212T070000Z');
+  assert.equal(url.searchParams.get('text'), '朝会, 第1回');
+  const ics = icsText(timed, new Date('2026-11-25T00:00:00Z'));
+  assert.match(ics, /\r\nDTSTART:20261212T040000Z\r\n/);
+  assert.match(ics, /\r\nSUMMARY:朝会\\, 第1回\r\n/);
+  assert.ok(ics.endsWith('END:VCALENDAR\r\n'));
+});
+
+test('map links skip online-only places and use the first physical place', async () => {
+  const { mapUrl } = await import('../schedule.js');
+  assert.equal(mapUrl('オンライン'), '');
+  assert.equal(mapUrl('福岡大学8号館831教室'), 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('福岡大学8号館831教室'));
+  assert.ok(mapUrl('Zero-Ten Park HALL／オンライン').endsWith(encodeURIComponent('Zero-Ten Park HALL')));
+});
