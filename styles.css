@@ -257,17 +257,21 @@ h3 {
   box-shadow: 0 2px 6px rgba(26, 22, 20, 0.16);
 }
 
-#upcoming .tile {
+#upcoming .tile,
+#past .tile {
   border: 2.5px solid var(--ink);
   box-shadow: 5px 5px 0 var(--ink);
 }
 #upcoming .event[data-kind] .tile { background: #fff; }
-#upcoming .frame { border-bottom: 2.5px solid var(--ink); }
-#upcoming .event-body { flex: 1; }
+#upcoming .frame,
+#past .frame { border-bottom: 2.5px solid var(--ink); }
+#upcoming .event-body,
+#past .event-body { flex: 1; }
 #upcoming .event[data-kind="参加"] .event-body { background: #b9f5d0; }
 #upcoming .event[data-kind="主催"] .event-body { background: #ffc2d4; }
 #upcoming .event[data-kind="紹介"] .event-body { background: #cfc6ff; }
-#upcoming .tag {
+#upcoming .tag,
+#past .tag {
   border: 2px solid var(--ink);
   background: #fff;
   color: var(--ink);
@@ -286,7 +290,9 @@ h3 {
 }
 @media (hover: hover) {
   #upcoming .event .tile:hover,
-  #upcoming .event:nth-child(even) .tile:hover {
+  #upcoming .event:nth-child(even) .tile:hover,
+  #past .event .tile:hover,
+  #past .event:nth-child(even) .tile:hover {
     box-shadow: 8px 8px 0 var(--ink);
   }
 }
@@ -327,8 +333,9 @@ h3 {
 .empty {
   margin: 0.15rem 0 0;
   padding: 1rem 1.1rem;
+  border: 2.5px dashed var(--ink);
   border-radius: 24px;
-  background: rgba(255, 253, 251, 0.7);
+  background: #fff;
   color: var(--muted);
   font-size: 1rem;
 }
@@ -383,7 +390,8 @@ h3 {
     align-items: start;
   }
 
-  #upcoming { align-items: stretch; }
+  #upcoming,
+  #past { align-items: stretch; }
   #upcoming .frame { aspect-ratio: 16 / 10; }
   #upcoming .is-hero .num { font-size: 2.35rem; }
   #upcoming .is-hero h3 { font-size: 1.12rem; }
