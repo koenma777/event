@@ -1,15 +1,5 @@
 [
   {
-    "id": "2025-11-08-sample-lunch",
-    "title": "【サンプル】架空の主催ランチ",
-    "date": "2025-11-08T12:00",
-    "place": "下関市の実在しない小部屋",
-    "kind": "主催",
-    "organizer": "平野賢正",
-    "note": "架空の昼食会です。",
-    "url": "https://example.com/events/sample-lunch"
-  },
-  {
     "id": "2026-11-28-yamagucheers-meet-merry-dfd1a4",
     "title": "YAMAGUCHEERS!! MEET&MERRY!（つながるフェス＠山口）",
     "date": "2026-11-28T12:00",
