@@ -1,16 +1,5 @@
 [
   {
-    "id": "2026-09-05-sample-minato",
-    "title": "【サンプル】消えた港の勉強会",
-    "date": "2026-09-05",
-    "place": "下関市の仮の会議室",
-    "kind": "参加",
-    "organizer": "架空の勉強会",
-    "note": "架空の勉強会です。",
-    "url": "https://example.com/events/sample-minato",
-    "image": "images/sample-harbor.svg"
-  },
-  {
     "id": "2026-02-14-sample-asaichi",
     "title": "【サンプル】存在しない朝市サミット",
     "date": "2026-02-14",
