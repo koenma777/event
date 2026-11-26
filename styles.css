@@ -410,6 +410,10 @@ h3 {
   line-height: 1.35;
   letter-spacing: 0.02em;
 }
+.deadline-row {
+  display: flex;
+  margin: 0;
+}
 .deadline.is-closed {
   border-style: dashed;
   box-shadow: none;
@@ -574,6 +578,15 @@ h3 {
   #upcoming .frame { aspect-ratio: 16 / 10; }
   #upcoming .is-hero .num { font-size: 2.35rem; }
   #upcoming .is-hero h3 { font-size: 1.12rem; }
+
+  #upcoming h3,
+  #past h3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(2em * 1.45);
+  }
 }
 
 @media (min-width: 1024px) {
