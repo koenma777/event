@@ -6,9 +6,11 @@ const KIND_MAP = Object.fromEntries(
 );
 const KIND_NAMES = Object.keys(KINDS).join('、');
 
-const EVENT_KEYS = ['title', 'date', 'end', 'deadline', 'place', 'kind', 'organizer', 'note', 'url', 'image'];
+const EVENT_KEYS = ['title', 'date', 'end', 'deadline', 'place', 'kind', 'organizer', 'tags', 'note', 'url', 'image'];
 const REQUIRED = ['title', 'date', 'place', 'kind', 'organizer', 'url'];
-const OPTIONAL = ['end', 'deadline', 'note', 'image'];
+const OPTIONAL = ['end', 'deadline', 'tags', 'note', 'image'];
+const MAX_TAGS = 3;
+const TAG_LIMIT = 20;
 const STORE_KEYS = ['id', ...EVENT_KEYS];
 const LIMITS = { title: 120, place: 120, organizer: 80, note: 400, url: 500, image: 500 };
 const ID_RE = /^[A-Za-z0-9][A-Za-z0-9-]{0,80}$/;
@@ -46,7 +48,25 @@ export function extractJson(body) {
   }
 }
 
+function validateTags(value) {
+  const list = Array.isArray(value) ? value : typeof value === 'string' ? value.split(/[\s,、，]+/) : null;
+  if (!list) return { error: 'tags は文字列の配列です。' };
+  const tags = [];
+  for (const item of list) {
+    if (typeof item !== 'string') return { error: 'tags は文字列の配列です。' };
+    const tag = oneLine(item).replace(/^[#＃]+/, '').trim();
+    if (!tag) continue;
+    if (tag.length > TAG_LIMIT) return { error: `タグ「${tag}」が長すぎます（${TAG_LIMIT}文字まで）。` };
+    if (/[\s#＃]/.test(tag)) return { error: `タグ「${tag}」に空白や # は使えません。` };
+    if (!tags.includes(tag)) tags.push(tag);
+  }
+  if (tags.length > MAX_TAGS) return { error: `tags は${MAX_TAGS}つまでです。` };
+  if (!tags.length) return { omit: true };
+  return { value: tags };
+}
+
 function validateField(key, value) {
+  if (key === 'tags' && value != null) return validateTags(value);
   if (value == null) {
     if (OPTIONAL.includes(key)) return { omit: true };
     return { error: `${key} は空にできません。` };
@@ -273,7 +293,7 @@ function updateEvent(stored, index, input) {
     if (value[key] == null) {
       if (merged[key] != null) changedKeys.push(key);
       delete merged[key];
-    } else if (merged[key] !== value[key]) {
+    } else if (JSON.stringify(merged[key]) !== JSON.stringify(value[key])) {
       changedKeys.push(key);
       merged[key] = value[key];
     }

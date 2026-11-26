@@ -160,6 +160,12 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
     }
     body.append(org);
   }
+  if (Array.isArray(event.tags) && event.tags.length) {
+    const tags = document.createElement('p');
+    tags.className = 'tags';
+    tags.textContent = event.tags.map((tag) => `#${tag}`).join(' ');
+    body.append(tags);
+  }
   if (!hasImage) {
     if (typeof event.place === 'string' && event.place) {
       const where = document.createElement('p');
