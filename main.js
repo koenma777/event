@@ -139,6 +139,7 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
 
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
+  if (event.title) heading.title = event.title;
   body.append(meta, heading);
   if (typeof event.comment === 'string' && event.comment) {
     const comment = document.createElement('div');
