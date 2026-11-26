@@ -261,6 +261,17 @@ h3 {
   overflow-wrap: anywhere;
 }
 #past .org { color: #2a261f; }
+.tags {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  word-spacing: 0.3em;
+  overflow-wrap: anywhere;
+}
+#past .tags { color: #2a261f; }
 .note { color: var(--note); }
 
 #upcoming .has-arrow .event-body { padding-bottom: 3rem; }

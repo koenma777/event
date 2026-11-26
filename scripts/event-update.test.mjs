@@ -280,3 +280,24 @@ test('kind accepts every listed role and its English alias', () => {
   assert.equal(bad.ok, false);
   assert.match(bad.comment, /登壇/);
 });
+
+test('tags accept a list or a "#a #b" string, drop #, and allow up to three', () => {
+  const created = applyIssue([], fence(addPayload));
+  const listed = applyIssue(created.events, fence({ action: 'update', id: created.id, event: { tags: ['#関係人口', '学生'] } }));
+  assert.equal(listed.ok, true);
+  assert.deepEqual(listed.events[0].tags, ['関係人口', '学生']);
+  const keys = Object.keys(listed.events[0]);
+  assert.ok(keys.indexOf('tags') > keys.indexOf('organizer') && keys.indexOf('tags') < keys.indexOf('url'));
+
+  const same = applyIssue(listed.events, fence({ action: 'update', id: created.id, event: { tags: '#関係人口 #学生' } }));
+  assert.equal(same.ok, true);
+  assert.equal(same.changed, false);
+
+  const tooMany = applyIssue(created.events, fence({ action: 'update', id: created.id, event: { tags: ['a', 'b', 'c', 'd'] } }));
+  assert.equal(tooMany.ok, false);
+  assert.match(tooMany.comment, /3つまで/);
+
+  const cleared = applyIssue(listed.events, fence({ action: 'update', id: created.id, event: { tags: null } }));
+  assert.equal(cleared.ok, true);
+  assert.equal(cleared.events[0].tags, undefined);
+});

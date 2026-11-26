@@ -26,6 +26,10 @@ test('every event in events.json has a known kind and a readable date', () => {
     assert.ok(parseWhen(event.date), `${event.id} の date を読めません`);
     if (event.end) assert.ok(parseWhen(event.end), `${event.id} の end を読めません`);
     if (event.deadline) assert.ok(parseWhen(event.deadline), `${event.id} の deadline を読めません`);
+    if (event.tags) {
+      assert.ok(Array.isArray(event.tags) && event.tags.length <= 3, `${event.id} の tags は3つまでの配列です`);
+      for (const tag of event.tags) assert.doesNotMatch(tag, /[\s#＃]/, `${event.id} のタグ「${tag}」`);
+    }
   }
 });
 
