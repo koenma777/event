@@ -128,19 +128,22 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
     badge.textContent = soon;
     meta.append(badge);
   }
-  const deadline = now ? deadlineLabel(event, now) : null;
-  if (deadline) {
-    const badge = document.createElement('span');
-    badge.className = deadline.closed ? 'deadline is-closed' : 'deadline';
-    badge.textContent = deadline.text;
-    meta.append(badge);
-  }
   meta.append(renderDate(event));
 
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
   if (event.title) heading.title = event.title;
   body.append(meta, heading);
+  const deadline = now ? deadlineLabel(event, now) : null;
+  if (deadline) {
+    const row = document.createElement('p');
+    row.className = 'deadline-row';
+    const badge = document.createElement('span');
+    badge.className = deadline.closed ? 'deadline is-closed' : 'deadline';
+    badge.textContent = deadline.text;
+    row.append(badge);
+    body.append(row);
+  }
   if (typeof event.comment === 'string' && event.comment) {
     const comment = document.createElement('div');
     comment.className = 'comment';

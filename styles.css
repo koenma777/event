@@ -410,6 +410,10 @@ h3 {
   line-height: 1.35;
   letter-spacing: 0.02em;
 }
+.deadline-row {
+  display: flex;
+  margin: 0;
+}
 .deadline.is-closed {
   border-style: dashed;
   box-shadow: none;
