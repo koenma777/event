@@ -301,3 +301,16 @@ test('tags accept a list or a "#a #b" string, drop #, and allow up to three', ()
   assert.equal(cleared.ok, true);
   assert.equal(cleared.events[0].tags, undefined);
 });
+
+test('comment is optional, kept as written, limited to 60 characters, and can be cleared', () => {
+  const created = applyIssue([], fence(addPayload));
+  const added = applyIssue(created.events, fence({ action: 'update', id: created.id, event: { comment: '学生が地元企業と雑談できる場は貴重。' } }));
+  assert.equal(added.ok, true);
+  assert.equal(added.events[0].comment, '学生が地元企業と雑談できる場は貴重。');
+  const keys = Object.keys(added.events[0]);
+  assert.ok(keys.indexOf('comment') > keys.indexOf('organizer') && keys.indexOf('comment') < keys.indexOf('url'));
+  const long = applyIssue(created.events, fence({ action: 'update', id: created.id, event: { comment: 'あ'.repeat(61) } }));
+  assert.equal(long.ok, false);
+  const cleared = applyIssue(added.events, fence({ action: 'update', id: created.id, event: { comment: null } }));
+  assert.equal(cleared.events[0].comment, undefined);
+});

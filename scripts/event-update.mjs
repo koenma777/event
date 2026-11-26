@@ -6,13 +6,13 @@ const KIND_MAP = Object.fromEntries(
 );
 const KIND_NAMES = Object.keys(KINDS).join('、');
 
-const EVENT_KEYS = ['title', 'date', 'end', 'deadline', 'place', 'kind', 'organizer', 'tags', 'note', 'url', 'image'];
+const EVENT_KEYS = ['title', 'date', 'end', 'deadline', 'place', 'kind', 'organizer', 'tags', 'comment', 'note', 'url', 'image'];
 const REQUIRED = ['title', 'date', 'place', 'kind', 'organizer', 'url'];
-const OPTIONAL = ['end', 'deadline', 'tags', 'note', 'image'];
+const OPTIONAL = ['end', 'deadline', 'tags', 'comment', 'note', 'image'];
 const MAX_TAGS = 3;
 const TAG_LIMIT = 20;
 const STORE_KEYS = ['id', ...EVENT_KEYS];
-const LIMITS = { title: 120, place: 120, organizer: 80, note: 400, url: 500, image: 500 };
+const LIMITS = { title: 120, place: 120, organizer: 80, comment: 60, note: 400, url: 500, image: 500 };
 const ID_RE = /^[A-Za-z0-9][A-Za-z0-9-]{0,80}$/;
 const ACTION_LABEL = { add: '追加', update: '更新', delete: '削除' };
 

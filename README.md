@@ -19,6 +19,7 @@
 - `kind` … 平野の関わり方。`参加` / `主催` / `紹介` / `登壇` / `講師` / `メンター` / `審査` / `運営` のどれか（英語の `attend` / `host` / `recommend` / `speak` / `teach` / `mentor` / `judge` / `staff` も可）。一覧は `schedule.js` の `KINDS`
 - `organizer` … 主催・共催・運営の団体。役割を付けて「／」で区切る（例: `主催 山口県／共催 大学リーグやまぐち／企画・運営 株式会社リージョナルマネジメント`）。後援・協賛は書かない
 - `tags` … タグ。省略可。3つまで。`["関係人口", "学生"]` のような配列か、`"#関係人口 #学生"` のような文字列。`#` は付けても付けなくてもよい。タイトルの下に `#関係人口 #学生` と出る。よく使うタグは [`docs/event-bot.md`](docs/event-bot.md)
+- `comment` … 平野のひとこと。省略可。60文字まで。タイトルの下に「K」の印付きで出る。本人の言葉だけを入れ、AI に作らせない
 - `note` … 短いメモ。省略可
 - `url` … 公式ページ。`http` または `https`
 - `image` … 省略可。URLを書くと `images/<id>.<拡張子>` に保存する。省略すると公式ページの `og:image`（なければ `twitter:image`）を探す。3MBを超える、画像でない、取得できないときは飛ばす。Issue 自体は成功する
@@ -28,6 +29,8 @@
 終了がなければ、開始日はその日が終わるまで「これから」です。終了の時刻を過ぎたもの、終了日の翌日になったものは「これまで」です。「これから」は開始が近い順、「これまで」は新しい順です。
 
 ## Issue で更新する
+
+ページ上部の一文（選ぶ基準）は `index.html` の `<p class="stance"></p>` に直接書きます。空なら表示されません。
 
 Grok Bot「イベント更新君」の指示は [`docs/event-bot.md`](docs/event-bot.md)、Claude Code 向けの引き継ぎ書は [`docs/handoff.md`](docs/handoff.md) にあります。項目やワークフローを変えたら、そこも合わせて直してください。
 
@@ -51,7 +54,7 @@ Grok Bot「イベント更新君」の指示は [`docs/event-bot.md`](docs/event
 }
 ```
 
-更新は変える項目だけです。`end` と `deadline` と `tags` と `note` と `image` は `null` で消せます。
+更新は変える項目だけです。`end` と `deadline` と `tags` と `comment` と `note` と `image` は `null` で消せます。
 
 ```json
 {
