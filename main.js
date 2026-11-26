@@ -135,14 +135,11 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
   if (event.title) heading.title = event.title;
   body.append(meta, heading);
   const deadline = now ? deadlineLabel(event, now) : null;
+  let badge = null;
   if (deadline) {
-    const row = document.createElement('p');
-    row.className = 'deadline-row';
-    const badge = document.createElement('span');
+    badge = document.createElement('span');
     badge.className = deadline.closed ? 'deadline is-closed' : 'deadline';
     badge.textContent = deadline.text;
-    row.append(badge);
-    body.append(row);
   }
   if (typeof event.comment === 'string' && event.comment) {
     const comment = document.createElement('div');
@@ -211,9 +208,20 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
     }
   }
   tile.append(body);
-  if (now) {
-    const actions = renderActions(event);
-    if (actions) tile.append(actions);
+  const actions = now ? renderActions(event) : null;
+  if (actions) tile.append(actions);
+  if (badge) {
+    const placeBadge = () => {
+      if (item.classList.contains('has-image')) {
+        badge.classList.add('is-sticker');
+        tile.append(badge);
+      } else {
+        badge.classList.remove('is-sticker');
+        (actions ?? body).append(badge);
+      }
+    };
+    placeBadge();
+    tile.querySelector('.photo')?.addEventListener('error', placeBadge);
   }
   item.append(tile);
   return item;
