@@ -292,6 +292,30 @@ h3 {
   line-height: 1;
 }
 #past .comment { background: rgba(255, 255, 255, 0.6); }
+.comment-text {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.comment.is-open .comment-text {
+  display: block;
+  -webkit-line-clamp: unset;
+}
+.comment-more {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
 .stance {
   margin: 0.7rem 0 0;
   font-size: clamp(0.95rem, 2.6vw, 1.15rem);

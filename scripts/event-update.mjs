@@ -12,7 +12,7 @@ const OPTIONAL = ['end', 'deadline', 'tags', 'comment', 'note', 'image'];
 const MAX_TAGS = 3;
 const TAG_LIMIT = 20;
 const STORE_KEYS = ['id', ...EVENT_KEYS];
-const LIMITS = { title: 120, place: 120, organizer: 80, comment: 60, note: 400, url: 500, image: 500 };
+const LIMITS = { title: 120, place: 120, organizer: 80, comment: 200, note: 400, url: 500, image: 500 };
 const ID_RE = /^[A-Za-z0-9][A-Za-z0-9-]{0,80}$/;
 const ACTION_LABEL = { add: '追加', update: '更新', delete: '削除' };
 

@@ -141,10 +141,30 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
   heading.textContent = event.title ?? '';
   body.append(meta, heading);
   if (typeof event.comment === 'string' && event.comment) {
-    const comment = document.createElement('p');
+    const comment = document.createElement('div');
     comment.className = 'comment';
-    comment.textContent = event.comment;
+    const text = document.createElement('p');
+    text.className = 'comment-text';
+    text.textContent = event.comment;
+    comment.append(text);
     body.append(comment);
+    requestAnimationFrame(() => {
+      if (text.scrollHeight <= text.clientHeight + 1) return;
+      comment.classList.add('is-clamped');
+      const more = document.createElement('button');
+      more.type = 'button';
+      more.className = 'comment-more';
+      more.textContent = '続きを読む';
+      more.setAttribute('aria-expanded', 'false');
+      more.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const open = comment.classList.toggle('is-open');
+        more.textContent = open ? '閉じる' : '続きを読む';
+        more.setAttribute('aria-expanded', String(open));
+      });
+      comment.append(more);
+    });
   }
   const parts = organizerParts(event.organizer);
   if (parts.length) {
