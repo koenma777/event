@@ -140,6 +140,12 @@ function renderEvent(event, { hero = false, arrow = false, index = 0, now = null
   const heading = document.createElement('h3');
   heading.textContent = event.title ?? '';
   body.append(meta, heading);
+  if (typeof event.comment === 'string' && event.comment) {
+    const comment = document.createElement('p');
+    comment.className = 'comment';
+    comment.textContent = event.comment;
+    body.append(comment);
+  }
   const parts = organizerParts(event.organizer);
   if (parts.length) {
     const org = document.createElement('ul');
