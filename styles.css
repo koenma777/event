@@ -410,10 +410,22 @@ h3 {
   line-height: 1.35;
   letter-spacing: 0.02em;
 }
-.deadline-row {
-  display: flex;
-  margin: 0;
+.deadline.is-sticker {
+  position: absolute;
+  z-index: 3;
+  top: 0.7rem;
+  right: 0.7rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.875rem;
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: rotate(4deg);
+  pointer-events: none;
 }
+.deadline.is-sticker.is-closed {
+  background: #eee;
+  box-shadow: none;
+}
+.actions .deadline { align-self: center; }
 .deadline.is-closed {
   border-style: dashed;
   box-shadow: none;
