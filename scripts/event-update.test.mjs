@@ -268,3 +268,15 @@ test('deadline can be added, canonicalized, rejected when malformed, and cleared
   assert.equal(cleared.ok, true);
   assert.equal(cleared.events[0].deadline, undefined);
 });
+
+test('kind accepts every listed role and its English alias', () => {
+  const created = applyIssue([], fence(addPayload));
+  for (const [input, expected] of [['登壇', '登壇'], ['speaker', '登壇'], ['講師', '講師'], ['mentor', 'メンター'], ['審査員', '審査'], ['staff', '運営']]) {
+    const updated = applyIssue(created.events, fence({ action: 'update', id: created.id, event: { kind: input } }));
+    assert.equal(updated.ok, true, input);
+    assert.equal(updated.events[0].kind, expected);
+  }
+  const bad = applyIssue(created.events, fence({ action: 'update', id: created.id, event: { kind: '見学' } }));
+  assert.equal(bad.ok, false);
+  assert.match(bad.comment, /登壇/);
+});
