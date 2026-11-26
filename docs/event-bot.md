@@ -1,6 +1,6 @@
 # イベント更新君（Grok）の指示
 
-Grok Bot「イベント更新君」に設定している指示の原本です。ワークフロー（`scripts/event-update.mjs`）や `events.json` の項目を変えたら、このファイルと Grok の指示を一緒に更新してください。
+Grok Bot「イベント更新君」に設定している指示の原本です。ワークフロー（`scripts/event-update.mjs`）や `events.json` の項目を変えたら、このファイルと Grok の指示を一緒に更新してください。サイト全体の仕様と作業の経緯は [`handoff.md`](handoff.md)（Claude Code 向けの引き継ぎ書）にあります。
 
 ---
 

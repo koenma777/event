@@ -29,7 +29,7 @@
 
 ## Issue で更新する
 
-Grok Bot「イベント更新君」の指示は [`docs/event-bot.md`](docs/event-bot.md) にあります。項目やワークフローを変えたら、そこも合わせて直してください。
+Grok Bot「イベント更新君」の指示は [`docs/event-bot.md`](docs/event-bot.md)、Claude Code 向けの引き継ぎ書は [`docs/handoff.md`](docs/handoff.md) にあります。項目やワークフローを変えたら、そこも合わせて直してください。
 
 `koenma777` がラベル `event` の Issue を開くと、Actions が本文の最初の `json` 囲みを検証して `events.json` を main に反映し、id をコメントして Issue を閉じます。ラベルはあとから付けても同じです。json が不正なときは理由をコメントし、Issue は開いたままにします。その実行は失敗として残ります。
 
