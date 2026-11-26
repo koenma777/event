@@ -1,4 +1,5 @@
 import {
+  KINDS,
   countdownLabel,
   dateMark,
   deadlineLabel,
@@ -9,11 +10,7 @@ import {
   splitEvents,
 } from './schedule.js';
 
-const KIND_CLASS = {
-  参加: 'attend',
-  主催: 'host',
-  紹介: 'recommend',
-};
+const KIND_CLASS = Object.fromEntries(Object.entries(KINDS).map(([name, kind]) => [name, kind.slug]));
 
 function isOfficialUrl(value) {
   try {

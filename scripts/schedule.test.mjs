@@ -1,25 +1,32 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
-import { formatWhen, isPast, parseWhen, splitEvents } from '../schedule.js';
+import { KINDS, formatWhen, isPast, parseWhen, splitEvents } from '../schedule.js';
 
 const events = JSON.parse(fs.readFileSync(new URL('../events.json', import.meta.url), 'utf8'));
 const viewedOn = new Date('2026-11-25T12:00:00+09:00');
 
 test('events split into upcoming then past at the viewing date', () => {
-  const { upcoming, past } = splitEvents(events, viewedOn);
-  assert.deepEqual(
-    upcoming.map((event) => event.title),
-    [
-      'YAMAGUCHEERS!! MEET&MERRY!（つながるフェス＠山口）',
-      'FU九州ビジネスプランコンテスト2026',
-      'Re:Framing Program YAMAGUCHI（リフプロやまぐち＠福岡）',
-    ],
-  );
-  assert.deepEqual(past, []);
-  assert.deepEqual(new Set(events.map((event) => event.kind)), new Set(['参加', '主催', '紹介']));
+  const sample = [
+    { title: '終わった会', date: '2026-11-19T18:00', end: '2026-11-19T20:45' },
+    { title: '遅いほう', date: '2026-12-12T13:00', end: '2026-12-12T18:00' },
+    { title: '近いほう', date: '2026-11-28T12:00', end: '2026-11-28T17:00' },
+  ];
+  const { upcoming, past } = splitEvents(sample, viewedOn);
+  assert.deepEqual(upcoming.map((event) => event.title), ['近いほう', '遅いほう']);
+  assert.deepEqual(past.map((event) => event.title), ['終わった会']);
   assert.equal(formatWhen(upcoming[0]), '2026年11月28日(土) 12:00–17:00');
   assert.equal(formatWhen(upcoming[1]), '2026年12月12日(土) 13:00–18:00');
+});
+
+test('every event in events.json has a known kind and a readable date', () => {
+  assert.ok(events.length > 0);
+  for (const event of events) {
+    assert.ok(Object.hasOwn(KINDS, event.kind), `${event.id} の kind「${event.kind}」は一覧にありません`);
+    assert.ok(parseWhen(event.date), `${event.id} の date を読めません`);
+    if (event.end) assert.ok(parseWhen(event.end), `${event.id} の end を読めません`);
+    if (event.deadline) assert.ok(parseWhen(event.deadline), `${event.id} の deadline を読めません`);
+  }
 });
 
 test('a date-only event stays upcoming through that Tokyo day', () => {

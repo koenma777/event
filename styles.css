@@ -107,10 +107,6 @@ section + section { margin-top: 2.2rem; }
   box-shadow: var(--shadow);
 }
 
-.event[data-kind="参加"] .tile { background: linear-gradient(165deg, #f3fffb 0%, #c9f0e2 100%); }
-.event[data-kind="主催"] .tile { background: linear-gradient(165deg, #fff6f1 0%, #ffd0bc 100%); }
-.event[data-kind="紹介"] .tile { background: linear-gradient(165deg, #f5f6ff 0%, #d5dcff 100%); }
-
 .frame {
   display: block;
   flex: none;
@@ -295,6 +291,11 @@ h3 {
 #upcoming .event[data-kind="参加"] .event-body { background: #b9f5d0; }
 #upcoming .event[data-kind="主催"] .event-body { background: #ffc2d4; }
 #upcoming .event[data-kind="紹介"] .event-body { background: #cfc6ff; }
+#upcoming .event[data-kind="登壇"] .event-body { background: #ffd8a8; }
+#upcoming .event[data-kind="講師"] .event-body { background: #fff3b8; }
+#upcoming .event[data-kind="メンター"] .event-body { background: #dcf7a6; }
+#upcoming .event[data-kind="審査"] .event-body { background: #f2e2c6; }
+#upcoming .event[data-kind="運営"] .event-body { background: #b5e3ff; }
 #upcoming .tag,
 #past .tag {
   border: 2px solid var(--ink);

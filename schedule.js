@@ -1,3 +1,14 @@
+export const KINDS = {
+  参加: { slug: 'attend', aliases: ['attend', 'join'] },
+  主催: { slug: 'host', aliases: ['host'] },
+  紹介: { slug: 'recommend', aliases: ['recommend', 'share'] },
+  登壇: { slug: 'speak', aliases: ['speak', 'speaker', 'talk'] },
+  講師: { slug: 'teach', aliases: ['teach', 'lecturer', 'instructor'] },
+  メンター: { slug: 'mentor', aliases: ['mentor'] },
+  審査: { slug: 'judge', aliases: ['judge', '審査員'] },
+  運営: { slug: 'staff', aliases: ['staff', 'organize', '運営スタッフ'] },
+};
+
 const WEEKDAYS = '日月火水木金土';
 
 const WHEN_RE =

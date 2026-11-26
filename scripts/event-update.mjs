@@ -1,14 +1,10 @@
 import { createHash } from 'node:crypto';
-import { canonicalizeWhen, rangesOk } from '../schedule.js';
+import { KINDS, canonicalizeWhen, rangesOk } from '../schedule.js';
 
-const KIND_MAP = {
-  attend: '参加',
-  host: '主催',
-  recommend: '紹介',
-  参加: '参加',
-  主催: '主催',
-  紹介: '紹介',
-};
+const KIND_MAP = Object.fromEntries(
+  Object.entries(KINDS).flatMap(([name, kind]) => [[name, name], ...kind.aliases.map((alias) => [alias, name])]),
+);
+const KIND_NAMES = Object.keys(KINDS).join('、');
 
 const EVENT_KEYS = ['title', 'date', 'end', 'deadline', 'place', 'kind', 'organizer', 'note', 'url', 'image'];
 const REQUIRED = ['title', 'date', 'place', 'kind', 'organizer', 'url'];
@@ -71,7 +67,7 @@ function validateField(key, value) {
   if (key === 'kind') {
     const kindText = text.normalize('NFKC');
     const kind = KIND_MAP[kindText] ?? KIND_MAP[kindText.toLowerCase()];
-    if (!kind) return { error: 'kind は 参加、主催、紹介 のいずれかです。' };
+    if (!kind) return { error: `kind は ${KIND_NAMES} のいずれかです。` };
     return { value: kind };
   }
   if (key === 'url') {
